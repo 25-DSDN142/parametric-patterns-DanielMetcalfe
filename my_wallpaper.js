@@ -1,7 +1,9 @@
-// let pixelX = 200;
-// let pixelY = 200;
+
 let gridsX = 50;
 let gridsY = 50;
+let circleSize=100;
+let circleX=200;
+let circleY=200;
 
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(GRID_WALLPAPER);
@@ -20,47 +22,52 @@ function wallpaper_background() {
 }
 
 function my_symbol() {
-  let pattern= createGraphics(200, 200);
-  
-  pattern.stroke(0);
-  pattern.fill(255, 0, 0);
-  pattern.circle(100, 100, 50);
-
+  let pattern = rawPattern();
  
-  // image(pattern, 0, 0);
+  // image(pattern, 0, 0);  //test raw pattern
+  crossstitch(pattern);
+}
 
-  crossstitch(pattern); 
+function rawPattern() {
+  let pg = createGraphics(200, 200);
+ 
+ //corner tiling test
+  pg.stroke(0);
+  pg.fill(255, 0, 0);
+  pg.circle(circleX, circleY, circleSize);
+  pg.circle(circleX-200, circleY, circleSize);
+  pg.rectMode(CENTER);
+  pg.ellipse(circleX, circleY-200, circleSize);
+  pg.ellipse(circleX-200, circleY-200, circleSize);
+ 
+
+  
+  return pg;
 }
 
 function crossstitch(pattern) {
-
-  //rasterising pgraphics objects learnt through Tim Roedenbroker pGraphics processing course. rewritten in p5.js by me from one of my previous processing projects. 
-
-  let wallpaperTileW= 200;
-  let wallpaperTileH= 200;
-  let pixelW = wallpaperTileW / gridsX;
-  let pixelH = wallpaperTileH/ gridsY;
-
-  let patternClr = pattern.get();  
+  let tileW = 200 / gridsX;
+  let tileH = 200 / gridsY;
+  let patternClr = pattern.get(); 
 
   noStroke();
 
   for (let x = 0; x < gridsX; x++) {
     for (let y = 0; y < gridsY; y++) {
-      let px = int(x * pixelW + pixelW / 2);
-      let py = int(y * pixelH + pixelH / 2);
+      let px = int(x * tileW + tileW / 2);
+      let py = int(y * tileH + tileH / 2);
 
       let clr = patternClr.get(px, py);
       let bright = brightness(clr);
       let size = map(bright, 0, 255, 0, 1);
 
-      let maskW = pixelW * size;
-      let maskH = pixelH * size;
+      let w = tileW * size;
+      let h = tileH * size;
 
       push();
       fill(clr);
       translate(px, py);
-      ellipse(0, 0, maskW, maskH);
+      ellipse(0, 0, w, h);
       pop();
     }
   }
