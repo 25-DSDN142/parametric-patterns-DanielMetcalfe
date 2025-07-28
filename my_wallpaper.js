@@ -103,79 +103,317 @@ function crossstitch(pattern) {
 
 
 function flower2 (pg) {
-////outlines
-pg.scale(0.5);
-pg.translate(100,100)
+
+  let darkBlue = color(32, 59, 114);
+  let lightBlue = color(69, 128, 194);
+  let brightBlue= color(0,189,255);
   pg.stroke(0);
-  pg.strokeWeight(2);
+  pg.strokeWeight(0.5);
   pg.noFill();
+ 
+pg.push();
 
-  pg.bezier(79, 52, 76, 66, 61, 73, 73, 89);
-  pg.bezier(79, 52, 80, 53, 81, 55, 82, 57);
-  pg.bezier(82, 57, 81, 64, 75, 69, 74, 76);
-  pg.bezier(81, 75, 81, 69, 85, 65, 90, 62);
-  pg.bezier(88, 63, 88, 60, 85, 57, 82, 57);
-  pg.bezier(53, 65, 66, 66, 66, 81, 73, 89);
-  pg.bezier(61, 68, 63, 66, 68, 66, 71, 68);
-  pg.bezier(98, 114, 94, 106, 83, 105, 78, 98);
-  pg.bezier(78, 98, 71, 91, 70, 79, 77, 73);
-  pg.bezier(77, 73, 73, 84, 83, 85, 82, 93);
-  pg.bezier(82, 94, 92, 96, 95, 105, 98, 113);
-  pg.bezier(122, 51, 125, 65, 139, 73, 128, 89);
-  pg.bezier(121, 51, 120, 53, 119, 55, 119, 57);
-  pg.bezier(119, 57, 120, 64, 126, 69, 127, 75);
-  pg.bezier(120, 75, 120, 69, 116, 64, 111, 62);
-  pg.bezier(113, 62, 112, 59, 116, 57, 119, 57);
-  pg.bezier(147, 64, 135, 66, 135, 81, 128, 89);
-  pg.bezier(140, 68, 137, 65, 133, 66, 130, 68);
-  pg.bezier(103, 114, 107, 106, 118, 104, 123, 97);
-  pg.bezier(123, 97, 130, 91, 131, 79, 124, 72);
-  pg.bezier(124, 73, 128, 84, 118, 85, 119, 93);
-  pg.bezier(119, 93, 110, 95, 106, 105, 103, 113);
-  pg.bezier(119, 75, 120, 81, 111, 82, 112, 89);
-  pg.bezier(112, 89, 107, 91, 102, 96, 101, 102);
-  pg.bezier(82, 75, 81, 81, 90, 83, 89, 89);
-  pg.bezier(89, 89, 94, 91, 100, 96, 100, 102);
-  pg.bezier(119, 75, 122, 77, 123, 81, 122, 85);
-  pg.bezier(81, 75, 79, 78, 78, 82, 79, 85);
-  pg.bezier(100, 50, 96, 61, 83, 62, 90, 78);
-  pg.bezier(100, 50, 105, 61, 118, 62, 111, 78);
-  pg.bezier(111, 62, 111, 62, 110, 61, 110, 61);
-  pg.bezier(88, 63, 89, 62, 90, 61, 91, 61);
-  pg.bezier(87, 82, 93, 73, 108, 73, 115, 82);
-  pg.bezier(91, 111, 98, 115, 99, 124, 100, 131);
-  pg.bezier(109, 112, 103, 116, 101, 124, 100, 131);
-  pg.bezier(100, 100, 101, 105, 100, 110, 99, 114);
-  pg.bezier(101, 100, 100, 105, 102, 110, 103, 114);
-  pg.bezier(103, 113, 103, 114, 103, 114, 103, 115);
-  pg.bezier(103, 115, 103, 115, 104, 114, 104, 114);
-  pg.bezier(103, 115, 103, 115, 103, 115, 104, 114);
-  pg.bezier(103, 114, 103, 114, 103, 114, 103, 114);
-  pg.bezier(71, 117, 75, 116, 80, 116, 83, 119);
-  pg.bezier(83, 119, 90, 117, 97, 123, 100, 130);
-  pg.bezier(71, 118, 76, 118, 77, 122, 79, 125);
-  pg.bezier(79, 125, 85, 129, 95, 126, 100, 133);
-  pg.bezier(130, 119, 126, 118, 121, 118, 118, 120);
-  pg.bezier(118, 120, 111, 117, 103, 123, 100, 130);
-  pg.bezier(129, 119, 125, 120, 124, 124, 121, 126);
-  pg.bezier(121, 126, 115, 130, 106, 126, 100, 132);
-  pg.bezier(59, 93, 64, 91, 69, 91, 74, 93);
-  pg.bezier(59, 93, 68, 93, 71, 103, 78, 107);
-  pg.bezier(78, 107, 84, 111, 92, 109, 98, 114);
-  pg.bezier(53, 65, 61, 72, 57, 86, 66, 91);
-  pg.bezier(142, 93, 137, 91, 132, 91, 127, 93);
-  pg.bezier(142, 93, 133, 93, 130, 103, 123, 107);
-  pg.bezier(123, 107, 117, 111, 109, 109, 103, 114);
-  pg.bezier(148, 65, 140, 72, 144, 85, 135, 91);
-  pg.bezier(111, 111, 110, 111, 109, 112, 108, 112);
-  pg.bezier(99, 131, 100, 136, 99, 141, 99, 146);
-  pg.bezier(100, 129, 100, 135, 100, 140, 100, 146);
-  pg.bezier(99, 145, 99, 147, 98, 149, 97, 150);
-  pg.bezier(100, 145, 100, 147, 101, 149, 103, 150);
-  pg.bezier(99, 155, 99, 153, 98, 152, 97, 150);
-  pg.bezier(100, 155, 100, 153, 101, 152, 102, 150);
-  pg.bezier(99, 155, 99, 155, 100, 156, 100, 156);
-  pg.bezier(100, 155, 100, 155, 100, 156, 100, 156);
+pg.scale(0.5);
+pg.translate(100,100);
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(83,61);
+  pg.bezierVertex(84,63,84,64,85,66);
+  pg.vertex(85,66);
+  pg.bezierVertex(84,72,79,76,78,82);
+  pg.bezierVertex(76,88,77,94,77,94);
+  pg.bezierVertex(67,80,80,73,83,61);
+  pg.vertex(83,61);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(60,73);
+  pg.bezierVertex(71,74,71,87,77,93);
+  pg.bezierVertex(77,93,78,96,78,96);
+  pg.bezierVertex(78,96,76,95,72,95);
+  pg.bezierVertex(64,90,67,79,60,73);
+  pg.vertex(60,73);
+  pg.endShape();
+  
+
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(99,115);
+  pg.bezierVertex(95,108,86,107,82,101);
+  pg.bezierVertex(82,101,80,99,78,96);
+  pg.bezierVertex(74,95,69,95,65,97);
+  pg.vertex(65,97);
+  pg.bezierVertex(73,97,76,105,82,109);
+  pg.bezierVertex(87,113,94,110,99,115);
+  pg.vertex(99,115);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(99,115);
+  pg.bezierVertex(95,108,86,107,82,101);
+  pg.bezierVertex(76,95,75,85,81,79);
+  pg.vertex(81,80);
+  pg.bezierVertex(77,90,86,90,85,97);
+  pg.vertex(85,97);
+  pg.bezierVertex(93,99,97,108,99,115);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(86,118);
+  pg.bezierVertex(83,116,79,116,76,117);
+  pg.vertex(76,117);
+  pg.bezierVertex(80,118,80,121,82,124);
+  pg.bezierVertex(88,127,96,125,100,130);
+  pg.vertex(100,130);
+  pg.bezierVertex(98,124,92,116,86,118);
+  pg.vertex(86,118);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(115,118);
+  pg.bezierVertex(108,116,102,124,100,130);
+  pg.vertex(100,130);
+  pg.bezierVertex(105,125,113,127,118,124);
+  pg.bezierVertex(120,121,121,118,125,117);
+  pg.vertex(125,117);
+  pg.bezierVertex(122,116,118,116,115,118);
+  pg.vertex(115,118);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(101,142);
+  pg.bezierVertex(101,143,102,145,103,146);
+  pg.vertex(103,146);
+  pg.bezierVertex(102,147,101,149,100,150);
+  pg.vertex(100,150);
+  pg.bezierVertex(100,149,99,147,98,146);
+  pg.vertex(98,146);
+  pg.bezierVertex(99,145,100,143,100,142);
+  pg.vertex(101,142);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(104,115);
+  pg.bezierVertex(103,115,101,108,101,108);
+  pg.bezierVertex(101,108,100,114,100,115);
+  pg.bezierVertex(99,115,99,115,98,114);
+  pg.bezierVertex(98,114,95,112,93,112);
+  pg.bezierVertex(99,116,100,124,100,130);
+  pg.vertex(101,129);
+  pg.bezierVertex(101,123,103,116,108,113);
+  pg.bezierVertex(108,113,110,111,111,111);
+  pg.bezierVertex(111,111,106,112,104,115);
+  pg.endShape();
+ 
+ 
+
+  
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(99,115);
+  pg.vertex(100,115);
+  pg.bezierVertex(101,111,102,109,101,105);
+  pg.vertex(101,105);
+  pg.bezierVertex(100,100,96,95,91,93);
+  pg.vertex(91,93);
+  pg.bezierVertex(92,88,84,87,85,81);
+  pg.vertex(85,82);
+  pg.bezierVertex(83,84,82,87,82,90);
+  pg.bezierVertex(82,90,86,93,86,97);
+  pg.vertex(85,97);
+  pg.bezierVertex(93,99,97,108,99,115);
+  pg.vertex(100,115);
+  pg.endShape();
+
+  
+
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(74,87);
+  pg.bezierVertex(74,87,71,80,67,76);
+  pg.bezierVertex(69,73,73,74,76,75);
+  pg.bezierVertex(76,75,74,78,74,81);
+  pg.bezierVertex(73,84,73,87,74,87);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(82,89);
+  pg.bezierVertex(82,89,80,87,80,85);
+  pg.bezierVertex(80,85,81,80,81,80);
+  pg.bezierVertex(80,80,78,82,78,82);
+  pg.bezierVertex(79,76,84,72,85,66);
+  pg.vertex(85,66);
+  pg.bezierVertex(88,65,91,68,90,71);
+  pg.vertex(90,71);
+  pg.bezierVertex(87,73,84,77,85,81);
+  pg.bezierVertex(85,81,82,84,82,89);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(101,59);
+  pg.bezierVertex(105,69,116,69,110,83);
+  pg.vertex(110,83);
+  pg.bezierVertex(105,80,98,80,93,84);
+  pg.vertex(92,83);
+  pg.bezierVertex(86,70,97,69,101,59);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(93,84);
+  pg.bezierVertex(89,76,91,72,94,69);
+  pg.vertex(93,69);
+  pg.bezierVertex(87,72,85,76,85,81);
+  pg.bezierVertex(85,81,85,83,87,86);
+  pg.bezierVertex(88,88,89,88,89,88);
+  pg.bezierVertex(89,88,91,86,93,84);
+  pg.endShape();
+
+  
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(120,60);
+  pg.bezierVertex(123,72,135,79,125,93);
+  pg.bezierVertex(125,93,127,87,124,81);
+  pg.bezierVertex(124,75,118,71,118,65);
+  pg.vertex(118,65);
+  pg.bezierVertex(118,63,119,62,120,60);
+  pg.vertex(120,60);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(142,72);
+  pg.bezierVertex(136,78,139,89,131,94);
+  pg.bezierVertex(126,94,124,95,124,95);
+  pg.bezierVertex(124,95,125,92,125,92);
+  pg.bezierVertex(131,86,131,73,142,72);
+  pg.vertex(142,72);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(104,114);
+  pg.bezierVertex(108,110,116,112,121,108);
+  pg.bezierVertex(127,104,129,96,137,96);
+  pg.vertex(137,96);
+  pg.bezierVertex(133,94,128,94,124,96);
+  pg.bezierVertex(122,98,121,100,121,100);
+  pg.bezierVertex(116,106,107,107,103,114);
+  pg.vertex(104,114);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(103,114);
+  pg.bezierVertex(105,107,109,98,117,96);
+  pg.vertex(117,96);
+  pg.bezierVertex(116,89,125,89,122,79);
+  pg.vertex(122,78);
+  pg.bezierVertex(128,84,127,94,121,100);
+  pg.bezierVertex(116,106,107,107,103,114);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(103,114);
+  pg.vertex(103,114);
+  pg.bezierVertex(102,110,101,108,101,104);
+  pg.vertex(101,104);
+  pg.bezierVertex(102,99,107,94,111,92);
+  pg.vertex(111,92);
+  pg.bezierVertex(110,87,118,86,118,80);
+  pg.vertex(118,81);
+  pg.bezierVertex(120,83,121,86,120,89);
+  pg.bezierVertex(120,89,117,92,117,96);
+  pg.vertex(117,96);
+  pg.bezierVertex(109,98,105,107,103,114);
+  pg.vertex(103,114);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(129,87);
+  pg.bezierVertex(129,87,131,80,135,75);
+  pg.bezierVertex(133,72,129,73,127,75);
+  pg.bezierVertex(127,75,128,77,129,80);
+  pg.bezierVertex(129,83,129,86,129,87);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(120,89);
+  pg.bezierVertex(120,89,122,87,123,84);
+  pg.bezierVertex(123,84,122,79,122,79);
+  pg.bezierVertex(123,79,124,81,124,81);
+  pg.bezierVertex(124,75,118,71,118,65);
+  pg.vertex(117,65);
+  pg.bezierVertex(115,65,112,67,112,70);
+  pg.vertex(112,70);
+  pg.bezierVertex(116,73,118,76,118,80);
+  pg.bezierVertex(118,80,120,83,120,89);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(113,87);
+  pg.bezierVertex(113,87,114,87,116,85);
+  pg.bezierVertex(116,85,118,80,118,80);
+  pg.bezierVertex(118,76,115,71,109,68);
+  pg.vertex(109,68);
+  pg.bezierVertex(112,71,114,75,110,83);
+  pg.bezierVertex(112,85,113,87,113,87);
+  pg.endShape();
+
+ 
+  pg.beginShape();
+  pg.fill(lightBlue);
+  pg.vertex(89,88);
+  pg.bezierVertex(95,78,108,79,113,87);
+  pg.bezierVertex(113,87,111,88,111,92);
+  pg.vertex(111,92);
+  pg.bezierVertex(101,97,101,105,101,105);
+  pg.vertex(101,106);
+  pg.bezierVertex(101,106,101,98,91,93);
+  pg.bezierVertex(91,93,92,91,89,88);
+  pg.endShape();
+
+
+  pg.beginShape();
+  pg.fill(darkBlue);
+  pg.vertex(100,142);
+  pg.vertex(100,129);
+  pg.vertex(101,129);
+  pg.vertex(101,142);
+  pg.endShape();
+
+ 
+
+  pg.pop();
 }
-
-
