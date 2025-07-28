@@ -4,8 +4,8 @@ let gridsX = 200;
 let gridsY = 200;
 
 ///test radial paths for adjustable amounts of objects
-let objAmount = 12; ///amount of objects
-let radius=70; //circlular path radius
+let objAmount = 10; ///amount of objects
+let radius=60; //circlular path radius
 let centerX=100; ///centre point of circular path
 let centerY=100;
 let objectSize = 20; //size of test object
@@ -38,7 +38,7 @@ function my_symbol() {
   crossstitch(pattern);
 }
 
-function rawPattern(){
+function rawPattern() {
   let pg = createGraphics(200, 200);
   let orange = color(241, 87, 85);
   let blueD = color(32, 59, 114);
@@ -46,30 +46,22 @@ function rawPattern(){
   pg.background(orange);
   pg.angleMode(DEGREES);
 
-
-pg.translate(-50,-50);
   for (let x = 0; x < objAmount; x++) {
-    let angle = x * (360 / objAmount) - 90;
+    let angle = x * (360 / objAmount) -90 ;
 
-    // if (x % 2 == 0){
+    let flowerX = centerX + radius * pg.cos(angle);   
+    let flowerY = centerY + radius * pg.sin(angle);
 
-    // pg.fill(blueD);
-    // }
+    pg.push();
 
-    // else{
-    //   pg.fill(blueL);
-    // }
+    pg.translate(flowerX, flowerY);
+    pg.rotate(angle + 90); 
 
-    let ellipseX = centerX + radius * pg.cos(angle);
-    let ellipseY = centerY + radius * pg.sin(angle);
-pg.push();
+    flower2(pg); 
 
-pg.translate(ellipseX,ellipseY);
-    // pg.ellipse(0, 0, objectSize, objectSize);
-    flower2(pg);
     pg.pop();
   }
-// }
+
   return pg;
 }
 
@@ -117,7 +109,7 @@ function flower2 (pg) {
 pg.push();
 
 pg.scale(0.5);
-pg.translate(0,0);
+pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff when trying to rotate the flower when centred at 100,100
 
  
   pg.beginShape();
