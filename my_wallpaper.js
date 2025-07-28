@@ -10,6 +10,8 @@ let centerX=100; ///centre point of circular path
 let centerY=100;
 let objectSize = 20; //size of test object
 
+let flower180 = true; ///toggle every even flower to be 180 degrees flipped if true
+
 let orange, blueD, blueL;
 
 
@@ -41,29 +43,37 @@ function my_symbol() {
 function rawPattern() {
   let pg = createGraphics(200, 200);
   let orange = color(241, 87, 85);
-  let blueD = color(32, 59, 114);
-  let blueL = color(69, 128, 194);
   pg.background(orange);
   pg.angleMode(DEGREES);
 
   for (let x = 0; x < objAmount; x++) {
-    let angle = x * (360 / objAmount) -90 ;
-
+    let angle = x * (360 / objAmount) - 90;
     let flowerX = centerX + radius * pg.cos(angle);   
     let flowerY = centerY + radius * pg.sin(angle);
 
+    let flowerFlip = x % 2 == 0; 
+
     pg.push();
-
     pg.translate(flowerX, flowerY);
-    pg.rotate(angle + 90); 
 
-    flower2(pg); 
+    if (flower180 == true) {
+    
+      if (x % 2 == 0) {
+        pg.rotate(angle + 90);
+      } else {
+        pg.rotate(angle + 270);
+      }
+    } else {
+      pg.rotate(angle + 90);
+    }
 
+    flower2(pg, flowerFlip); 
     pg.pop();
   }
 
   return pg;
 }
+
 
 
 
