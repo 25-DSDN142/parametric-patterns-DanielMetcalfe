@@ -5,7 +5,7 @@ let gridsY = 200;
 
 ///test radial paths for adjustable amounts of objects
 let objAmount = 12; ///amount of objects
-let radius=60; //circlular path radius
+let radius=70; //circlular path radius
 let centerX=100; ///centre point of circular path
 let centerY=100;
 let objectSize = 20; //size of test object
@@ -44,29 +44,31 @@ function rawPattern(){
   let blueD = color(32, 59, 114);
   let blueL = color(69, 128, 194);
   pg.background(orange);
- flower2(pg);
+  pg.angleMode(DEGREES);
 
 
-//  ////objects on the circular path- using cosine and sine to postion objects.
-//  for (let x = 0; x < objAmount; x++) {
-//   let angle = x * (360 / objAmount) - 90;
+pg.translate(-50,-50);
+  for (let x = 0; x < objAmount; x++) {
+    let angle = x * (360 / objAmount) - 90;
 
-//   if (x % 2 == 0){
+    // if (x % 2 == 0){
 
-//   pg.fill(blueD);
-//   }
+    // pg.fill(blueD);
+    // }
 
-//   else{
-//     pg.fill(blueL);
-//   }
+    // else{
+    //   pg.fill(blueL);
+    // }
 
-//   let ellipseX = centerX + radius * pg.cos(angle);
-//   let ellipseY = centerY + radius * pg.sin(angle);
+    let ellipseX = centerX + radius * pg.cos(angle);
+    let ellipseY = centerY + radius * pg.sin(angle);
+pg.push();
 
-//   pg.ellipse(ellipseX, ellipseY, objectSize, objectSize);
-
-
-
+pg.translate(ellipseX,ellipseY);
+    // pg.ellipse(0, 0, objectSize, objectSize);
+    flower2(pg);
+    pg.pop();
+  }
 // }
   return pg;
 }
@@ -94,6 +96,7 @@ function crossstitch(pattern) {
       push();
       translate(px, py);
       ellipse(0, 0, crossW, crossH);
+   
       pop();
     }
   }
@@ -114,7 +117,7 @@ function flower2 (pg) {
 pg.push();
 
 pg.scale(0.5);
-pg.translate(100,100);
+pg.translate(0,0);
 
  
   pg.beginShape();
