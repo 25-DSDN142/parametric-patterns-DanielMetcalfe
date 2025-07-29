@@ -1,18 +1,29 @@
 
 //cross stich settings
-let gridsX = 200;
+let gridsX = 200; //adjusts amount of crossstich dots
 let gridsY = 200;
 
-///test radial paths for adjustable amounts of objects
-let objAmount = 10; ///amount of objects
-let radius=60; //circlular path radius
-let centerX=100; ///centre point of circular path
+///radial flower settings - flower 2 function
+let flowerAmount = 10; //amount of flowers
+let radius=60; //circular path radius
+let centerX=100; //centre point of circular path
 let centerY=100;
-let objectSize = 20; //size of test object
+let flower180 = false; //toggle every even flower to be 180 degrees flipped if true
 
-let flower180 = true; ///toggle every even flower to be 180 degrees flipped if true
+let lightClrSelect =0; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
+let darkClrSelect =1; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
+
+
+///centre flower
+let centreDotAmount= 20;
+let radius2 =20;
 
 let orange, blueD, blueL;
+
+//use different functions- eg use rect, ellipses, bezier etc.
+//use more than variables, also use different varaibles- eg colour, size, amount
+//how different do each 9 look- higher grade for making them all look different. make the sketch as flexible as possible, have it so it can change so much. eg if reduc radial to 5 add in fillagary to fill using if true statmeent
+//eg how to show change in colours// changed bg fill blue to orange, line 45;
 
 
 
@@ -34,44 +45,61 @@ function wallpaper_background() {
 
 function my_symbol() {
 
-  let pattern = rawPattern();
+  let pattern = rawPattern(); // converting the raw pattern graphics object into a variable that the crossstich rasteriser can use
   
   // image(pattern, 0, 0);  //test raw pattern
   crossstitch(pattern);
 }
 
 function rawPattern() {
-  let pg = createGraphics(200, 200);
-  let orange = color(241, 87, 85);
-  pg.background(orange);
-  pg.angleMode(DEGREES);
 
-  for (let x = 0; x < objAmount; x++) {
-    let angle = x * (360 / objAmount) - 90;
-    let flowerX = centerX + radius * pg.cos(angle);   
+  //this is where the pattern is drawn, it is drawn onto a pg object so that it can be rasterised for the cross stich effect
+  
+  let pg = createGraphics(200, 200); //creating graphics object
+  let orange = color(241, 87, 85); // creating orange colour variable
+  
+  pg.background(orange);//settingh graphics object background, feels redundant but allows me to have a black background for the whole sketch and a colourful background that gets crosstiched, the black background is important as it gives the crossstich effect
+  pg.angleMode(DEGREES); //changing from radians
+
+  //for loop for duplicating flower2 and radially distributing it
+  for (let x = 0; x < flowerAmount; x++) {
+    
+    let angle = x * (360 / flowerAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
+    
+    let flowerX = centerX + radius * pg.cos(angle);   // this sets the x and y position of each flower using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
     let flowerY = centerY + radius * pg.sin(angle);
 
-    let flowerFlip = x % 2 == 0; 
+    let flowerFlip = x % 2 == 0; //setting up every even flower to be flipped
 
-    pg.push();
-    pg.translate(flowerX, flowerY);
-
+    pg.push(); //putting the flower into its own system so it doesn't use global rotation etc. 
+    
+    pg.translate(flowerX, flowerY); //setting the x and y position of the flower so that it follows the radial distribution
+    
+    //setting up true false switch using if statement so that the 180 degree flip can be turned on and off to create flexibility
+   
+   //if flower180 variable = true
     if (flower180 == true) {
     
+      // flipping every even flower using if statement. 
       if (x % 2 == 0) {
-        pg.rotate(angle + 90);
+        pg.rotate(angle + 90); // this is the flower pointed out from the centre, using rotate with the angle variable to rotate the flower to the circle tangent and then adding 90 degrees to make it perpendicular to circle tangent
       } else {
-        pg.rotate(angle + 270);
+        pg.rotate(angle + 270); //this is the flower pointed in to the centre, using 270 instead of 90 to flip it
       }
-    } else {
+    } 
+    //if flower180 variable =false;
+    else {
       pg.rotate(angle + 90);
     }
 
-    flower2(pg, flowerFlip); 
-    pg.pop();
+    flower2(pg, flowerFlip); // imaging the flower2 graphics object
+    pg.pop();// ending that system 
   }
 
-  return pg;
+// flower1(pg);
+
+
+  return pg; // this tells the function to output the above code;
 }
 
 
@@ -79,51 +107,87 @@ function rawPattern() {
 
 
 function crossstitch(pattern) {
-  let tileW = 200 / gridsX;
+  let tileW = 200 / gridsX; // setting the amount of crossstich dots by dividing the mySymbol 200 x 200 size by the adjustable variables gridsX and gridsY
   let tileH = 200 / gridsY;
-  let crossW= tileW;
-  let crossH= tileH;
-  let patternClr = pattern.get();
+  let dotW= tileW; // setting the size of the crosstich dots, creating its 
+  let dotH= tileH;
+  let patternClr = pattern.get(); // getting the 'pixel data' from the raw pattern function so that it can then be rasterised
 
-  noStroke();
+  noStroke(); //adding no stroke to dots
 
+   //nested for loop grid that creates the crossstich dots
   for (let x = 0; x < gridsX; x++) {
     for (let y = 0; y < gridsY; y++) {
-      let px = int(x * tileW + tileW / 2);
-      let py = int(y * tileH + tileH / 2);
+      let px = int(x * tileW + tileW / 2); //raw pattern pixel x coordinate to get colour info from
+      let py = int(y * tileH + tileH / 2); //raw pattern pixel y coordinate to get colour info from
 
-      let clr = patternClr.get(px, py);
-      fill(clr);
+      let clr = patternClr.get(px, py); //getting the pixel data from the raw pattern using px and py, 
+      fill(clr);// filling the crossstich dot with the colour that the pixel data has
 
-      push();
-      translate(px, py);
-      ellipse(0, 0, crossW, crossH);
+      push();//setting up seperate system for the for loop
+      translate(px, py);//setting crosstich dot x and y postition
+      ellipse(0, 0, dotW, dotH); //drawing cross stich dot
    
-      pop();
+      pop();//ending system
     }
   }
 }
 
 
+// function flower1(pg){
+// let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from
+// let centreDotsize=2;
+// pg.angleMode(DEGREES);
+// pg.stroke(0);
+// pg.strokeWeight(0.1);
+// if (false){
+// pg.fill(lightColour[lightClrSelect]);
+// }
+// else{pg.fill(lightColour[1])}
 
+// for (let x2 = 0; x2 < centreDotAmount; x2++) {
+    
+//   let angle = x2 * (360 / centreDotAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
+  
+//   let flowerDotsX = centerX + radius2 * pg.cos(angle);   // this sets the x and y position of each flower using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
+//   let flowerDotsY = centerY + radius2 * pg.sin(angle);
+
+ 
+
+//   pg.push(); //putting the flower into its own system so it doesn't use global rotation etc. 
+  
+
+
+// pg.translate(flowerDotsX,flowerDotsY);
+// pg.ellipse (0,0,centreDotsize);
+
+// pg.pop();
+
+
+// }
 
 function flower2 (pg) {
+//radial flower
+  
+  let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from
+  let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
+  
 
-  let darkBlue = color(32, 59, 114);
-  let lightBlue = color(69, 128, 194);
-  let brightBlue= color(0,189,255);
-  pg.stroke(0);
-  pg.strokeWeight(0.5);
-  pg.noFill();
+  //drawing the flower so that it can be used on the raw pattern graphics object, made it its own function so that the raw pattern is cleaner since I will be drawing multiple things on it
+  
+  pg.stroke(0);/// setting the flower stroke colour
+  pg.strokeWeight(0.5);/// setting the flower stroke weight
  
-pg.push();
-
-pg.scale(0.5);
-pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff when trying to rotate the flower when centred at 100,100
-
  
-  pg.beginShape();
-  pg.fill(lightBlue);
+  pg.push();//setting up its own system
+
+  pg.scale(0.5); //setting the flower size
+  pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff when trying to rotate the flower when centred at 100,100
+
+ //drawing the flower using beginShape(), and bezier vertexs segments so that I can fill the shapes in
+ 
+ pg.beginShape();
+  pg.fill(lightColour[lightClrSelect]); //setting colour based light colour array selector
   pg.vertex(83,61);
   pg.bezierVertex(84,63,84,64,85,66);
   pg.vertex(85,66);
@@ -135,7 +199,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(60,73);
   pg.bezierVertex(71,74,71,87,77,93);
   pg.bezierVertex(77,93,78,96,78,96);
@@ -146,7 +210,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
   
 
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(99,115);
   pg.bezierVertex(95,108,86,107,82,101);
   pg.bezierVertex(82,101,80,99,78,96);
@@ -159,7 +223,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(99,115);
   pg.bezierVertex(95,108,86,107,82,101);
   pg.bezierVertex(76,95,75,85,81,79);
@@ -171,7 +235,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(86,118);
   pg.bezierVertex(83,116,79,116,76,117);
   pg.vertex(76,117);
@@ -184,7 +248,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(115,118);
   pg.bezierVertex(108,116,102,124,100,130);
   pg.vertex(100,130);
@@ -197,7 +261,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(101,142);
   pg.bezierVertex(101,143,102,145,103,146);
   pg.vertex(103,146);
@@ -211,7 +275,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(104,115);
   pg.bezierVertex(103,115,101,108,101,108);
   pg.bezierVertex(101,108,100,114,100,115);
@@ -228,7 +292,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
   
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(99,115);
   pg.vertex(100,115);
   pg.bezierVertex(101,111,102,109,101,105);
@@ -247,7 +311,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
   
 
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(74,87);
   pg.bezierVertex(74,87,71,80,67,76);
   pg.bezierVertex(69,73,73,74,76,75);
@@ -257,7 +321,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(82,89);
   pg.bezierVertex(82,89,80,87,80,85);
   pg.bezierVertex(80,85,81,80,81,80);
@@ -272,7 +336,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(101,59);
   pg.bezierVertex(105,69,116,69,110,83);
   pg.vertex(110,83);
@@ -283,7 +347,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(93,84);
   pg.bezierVertex(89,76,91,72,94,69);
   pg.vertex(93,69);
@@ -295,7 +359,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
   
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(120,60);
   pg.bezierVertex(123,72,135,79,125,93);
   pg.bezierVertex(125,93,127,87,124,81);
@@ -307,7 +371,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(142,72);
   pg.bezierVertex(136,78,139,89,131,94);
   pg.bezierVertex(126,94,124,95,124,95);
@@ -318,7 +382,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(104,114);
   pg.bezierVertex(108,110,116,112,121,108);
   pg.bezierVertex(127,104,129,96,137,96);
@@ -331,7 +395,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(103,114);
   pg.bezierVertex(105,107,109,98,117,96);
   pg.vertex(117,96);
@@ -343,7 +407,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(103,114);
   pg.vertex(103,114);
   pg.bezierVertex(102,110,101,108,101,104);
@@ -361,7 +425,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(129,87);
   pg.bezierVertex(129,87,131,80,135,75);
   pg.bezierVertex(133,72,129,73,127,75);
@@ -371,7 +435,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(120,89);
   pg.bezierVertex(120,89,122,87,123,84);
   pg.bezierVertex(123,84,122,79,122,79);
@@ -386,7 +450,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(113,87);
   pg.bezierVertex(113,87,114,87,116,85);
   pg.bezierVertex(116,85,118,80,118,80);
@@ -398,7 +462,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
   pg.beginShape();
-  pg.fill(lightBlue);
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(89,88);
   pg.bezierVertex(95,78,108,79,113,87);
   pg.bezierVertex(113,87,111,88,111,92);
@@ -411,7 +475,7 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
 
   pg.beginShape();
-  pg.fill(darkBlue);
+  pg.fill(darkColour[darkClrSelect]);
   pg.vertex(100,142);
   pg.vertex(100,129);
   pg.vertex(101,129);
@@ -420,5 +484,5 @@ pg.translate(-100,-100); ///having to shift flower 0,0 since it does weird stuff
 
  
 
-  pg.pop();
+  pg.pop();//ending that system
 }
