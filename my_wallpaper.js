@@ -3,27 +3,33 @@
 let gridsX = 200; //adjusts amount of crossstich dots
 let gridsY = 200;
 
+
+//global colour settings
+let lightClrSelect =0; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
+let darkClrSelect =0; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green
+let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green;
+
 ///radial flower settings - flower 2 function
 let flowerAmount = 10; //amount of flowers
 let radius=60; //circular path radius
-let centerX=100; //centre point of circular path
+let centerX=100; //centre point of circular path and canvas
 let centerY=100;
 let flower180 = false; //toggle every even flower to be 180 degrees flipped if true
 
-let lightClrSelect =0; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
-let darkClrSelect =1; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
 
 
-///centre flower
-let centreDotAmount= 20;
-let radius2 =20;
+///center flower
 
-let orange, blueD, blueL;
+let centerDotAmount= 20; //amount of dots on each row
+let centerDotSize= 1.5; //size of dots
+let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
+let radius2 =10; //sets radius of ellipses
+let rectSize= 5; //size of center diamond
+let CenterRectSelect =true; //toggles between center having either diamond and ellipse
 
-//use different functions- eg use rect, ellipses, bezier etc.
-//use more than variables, also use different varaibles- eg colour, size, amount
-//how different do each 9 look- higher grade for making them all look different. make the sketch as flexible as possible, have it so it can change so much. eg if reduc radial to 5 add in fillagary to fill using if true statmeent
-//eg how to show change in colours// changed bg fill blue to orange, line 45;
+
+
+
 
 
 
@@ -56,9 +62,10 @@ function rawPattern() {
   //this is where the pattern is drawn, it is drawn onto a pg object so that it can be rasterised for the cross stich effect
   
   let pg = createGraphics(200, 200); //creating graphics object
-  let orange = color(241, 87, 85); // creating orange colour variable
+
+  let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; //creating colour array to easily switch background colours. p5 array reference page helped
   
-  pg.background(orange);//settingh graphics object background, feels redundant but allows me to have a black background for the whole sketch and a colourful background that gets crosstiched, the black background is important as it gives the crossstich effect
+  pg.background(bgColour[bgClrSelect]);//settingh graphics object background, feels redundant but allows me to have a black background for the whole sketch and a colourful background that gets crosstiched, the black background is important as it gives the crossstich effect
   pg.angleMode(DEGREES); //changing from radians
 
   //for loop for duplicating flower2 and radially distributing it
@@ -96,7 +103,7 @@ function rawPattern() {
     pg.pop();// ending that system 
   }
 
-// flower1(pg);
+flower1(pg); ///center flower
 
 
   return pg; // this tells the function to output the above code;
@@ -107,6 +114,9 @@ function rawPattern() {
 
 
 function crossstitch(pattern) {
+// graphics object rasterisation technique learnt through Tim Roedenbroker pGraphics processing course. I rewrote it in p5 from a previous processing sketch of mine with variables that work for this context.
+
+
   let tileW = 200 / gridsX; // setting the amount of crossstich dots by dividing the mySymbol 200 x 200 size by the adjustable variables gridsX and gridsY
   let tileH = 200 / gridsY;
   let dotW= tileW; // setting the size of the crosstich dots, creating its 
@@ -134,37 +144,64 @@ function crossstitch(pattern) {
 }
 
 
-// function flower1(pg){
-// let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from
-// let centreDotsize=2;
-// pg.angleMode(DEGREES);
-// pg.stroke(0);
-// pg.strokeWeight(0.1);
-// if (false){
-// pg.fill(lightColour[lightClrSelect]);
-// }
-// else{pg.fill(lightColour[1])}
+function flower1(pg){
+  //Creating the center flower
 
-// for (let x2 = 0; x2 < centreDotAmount; x2++) {
-    
-//   let angle = x2 * (360 / centreDotAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
+  let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
+  let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
   
-//   let flowerDotsX = centerX + radius2 * pg.cos(angle);   // this sets the x and y position of each flower using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
-//   let flowerDotsY = centerY + radius2 * pg.sin(angle);
 
+// center dots
+let ringSpace = (radius2/ dotRows); ///variable for spacing out the rings of ellipses
+
+//using a nested for loop to create the rings, learnt the ring distribution through Patt Vira multiple circles with for loop youtube video and added it into the x loop so I could use it to translate my rings of radially distributed ellipses instead of regular circles like in video
+
+for (let x = 0; x < centerDotAmount; x++) { //the x loop sets the amount of dots in each ring
+for (let y = 0; y <dotRows; y ++){  //the y loop sets the amount of rings
+
+  let angle2 = x * (360 / centerDotAmount)-90; //same code as written for flower2 distribution- just dividing a circle by the amount of dots and then - 90 degrees so it is always vertically symmetrical
+
+
+pg.angleMode(DEGREES);
  
+  let ringDistance= ringSpace * y; //variable to make it cleaner in the lines below;
+ 
+ let flowerDotsX = centerX + ringDistance * pg.cos(angle2);   // reusing the code I creeated for the radially distributed flowers to translate the ellipses onto a circular path
+ let flowerDotsY = centerY + ringDistance * pg.sin(angle2);
 
-//   pg.push(); //putting the flower into its own system so it doesn't use global rotation etc. 
+    pg.push();
+    pg.fill(darkColour[darkClrSelect]);
+ 
+    pg.noStroke();
+    pg.translate(flowerDotsX,flowerDotsY);
   
+  pg.ellipse(0,0,centerDotSize); //dots
+  pg.pop();
+}
+}
 
+// center diamond or ellipse
+pg.push();
+pg.fill(lightColour[lightClrSelect]);
+pg.stroke(0);
+pg.strokeWeight(0.25);
+pg.rectMode(CENTER);
+pg.translate(centerX,centerY); //setting to center of mySymbol grid
 
-// pg.translate(flowerDotsX,flowerDotsY);
-// pg.ellipse (0,0,centreDotsize);
+// setting up toggle between diamond or circle using if statement
+if (CenterRectSelect==true){
+pg.rotate(45); //rotating 45 degrees to make diamond
+pg.rect(0,0,rectSize);
+} 
+else {
+  pg.ellipse(0,0,rectSize);
+}
+pg.pop();
 
-// pg.pop();
+//finish petals and geometric triangles
+//set up array or if statement to toggle between multiple flowers, 1 flower etc in the middle
 
-
-// }
+}
 
 function flower2 (pg) {
 //radial flower
@@ -187,7 +224,7 @@ function flower2 (pg) {
  //drawing the flower using beginShape(), and bezier vertexs segments so that I can fill the shapes in
  
  pg.beginShape();
-  pg.fill(lightColour[lightClrSelect]); //setting colour based light colour array selector
+  pg.fill(lightColour[lightClrSelect]);
   pg.vertex(83,61);
   pg.bezierVertex(84,63,84,64,85,66);
   pg.vertex(85,66);
