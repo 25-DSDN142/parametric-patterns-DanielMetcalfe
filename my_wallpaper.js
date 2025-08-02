@@ -27,8 +27,10 @@ let radius2 =10; //sets radius of ellipses
 let rectSize= 5; //size of center diamond
 let CenterRectSelect =true; //trigger for if statement that toggles between center having either diamond and ellipse
 
-let petalAmount = 5;
-let radius3 = 20;
+let petalAmount = 7; //5 for geometric
+let radius3 = 15; ///20 for geometric
+let CenterGeometric = false; //trigger for if statement that toggles between geometric layout of petals and regular petals for flowers
+let centerDotsOn = true; //// trigger for if staements that turns off centre dots
 
 
 
@@ -166,17 +168,26 @@ function flower1(pg){
     let petalY = centerY + radius3 * pg.sin(angle);
 
    
-    pg.push(); //putting the flower into its own system so it doesn't use global rotation etc. 
+    pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
     
     pg.translate(petalX, petalY); //setting the x and y position of the petal so that it follows the radial distribution
     
    
-      pg.rotate(angle + 90);
+      pg.rotate(angle + 95);
   
     pg.beginShape();
     pg.fill(lightColour[lightClrSelect]);
+    pg.stroke(0);
+    pg.strokeWeight(0.5);
     
-    pg.translate(-75,-75);
+    if (CenterGeometric == true) {
+      pg.translate(-75,-75);
+    }
+      
+    else {
+    pg.translate(-100,-100);
+        }
+
     pg.vertex(102,106);
     pg.bezierVertex(103,106,108,99,103,91);
     pg.bezierVertex(99,84,99,86,97,82);
@@ -193,10 +204,7 @@ function flower1(pg){
 
 
 
-
-
-
-
+if (centerDotsOn == true){       //if statement to turn centre dots off for using geometric pattern in the middle
 
   //center dots background
 pg.fill(lightColour[lightClrSelect]);
@@ -250,7 +258,7 @@ else {
   pg.ellipse(0,0,rectSize);
 }
 pg.pop();
-
+}
 
 
 }
