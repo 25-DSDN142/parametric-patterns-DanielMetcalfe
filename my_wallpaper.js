@@ -51,6 +51,11 @@ let cornerScale =1;
 let geometricCorner = true;
 let cornerXPos = true; //selects between corners or centre edge reflections for motif
 
+//filifree settings
+let filGapTranslateDisHoriz= 148; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
+let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
+let filigreeScale = 0.75;
+
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(DEVELOP_GLYPH);
   pWallpaper.resolution(NINE_PORTRAIT);
@@ -103,11 +108,35 @@ let pg = createGraphics(200, 200); //creating graphics object
 //Center motif
 // centerMotif1and2(pg);
 
-//filigree
-pg.scale(-1,1);
-pg.translate(-150,40);
+
+// ... inside rawPattern(), replacing the filigree section:
+
+
+
+
+
+
+
+pg.push();
+
+// pg.translate(-75,-70) //setting it to 0,0 so that my previous circle array code works /for conrers
+
+pg.push();
+
 
 filigree(pg);
+pg.pop();
+
+// mirrored filigree
+pg.push();
+pg.translate(filGapTranslateDisHoriz, 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
+filigree(pg);
+pg.pop();
+
+
+
+
 
   return pg; // this tells the function to output the above code;
 }
@@ -1290,181 +1319,7 @@ let rectSize= 5; //size of center diamond
     
     }
     
-    // function cornerGeometricShape(pg){
-    //   //Creating the center flower
     
-    //   let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
-    //   let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
-    //   let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; 
-    
-    //   pg.angleMode(DEGREES); //changing from radians
-    
-    //   //petals tangent
-    //   //for loop for duplicating petals and radially distributing them
-    // // pg.scale(0.9);
-    // // pg.translate(11,10);
-    //    for (let x = 0; x < petalAmount; x++) {
-        
-    //     let angle = x * (360 / petalAmount) - 85; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
-        
-    //     let petalX = centerX + radius3 * pg.cos(angle);   // this sets the x and y position of each petal using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
-    //     let petalY = centerY + radius3 * pg.sin(angle);
-    
-    
-    //     pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
-        
-    //     pg.translate(petalX, petalY); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-    //       pg.rotate(angle + 90);
-      
-    //     pg.beginShape();
-    //     pg.fill(darkColour[darkClrSelect]);
-    //     pg.stroke(0);
-    //     pg.strokeWeight(0.5);
-        
-    //     if (CenterGeometric == true) {
-    //       pg.translate(-75,-75);
-    //     }
-          
-    //     else {
-    //     pg.translate(-100,-100);
-    //         }
-    
-    //     pg.vertex(102,106);
-    //     pg.bezierVertex(103,106,108,99,103,91);
-    //     pg.bezierVertex(99,84,99,86,97,82);
-    //     pg.vertex(97,82);
-    //     pg.bezierVertex(96,86,97,84,93,91);
-    //     pg.bezierVertex(88,99,93,106,93,106);
-    //     pg.bezierVertex(93,106,97,112,103,106);
-    //     pg.endShape();
-    
-    //     pg.pop();// ending that system 
-    //   }
-    
-    //   for (let x = 0; x < petalAmount; x++) {
-        
-    //     let angle = x * (360 / petalAmount) - 85; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
-        
-    //     let petalX = centerX + radius3 * pg.cos(angle);   // this sets the x and y position of each petal using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
-    //     let petalY = centerY + radius3 * pg.sin(angle);
-    
-    
-    //     pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
-        
-    //     pg.translate(petalX, petalY); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-    //       pg.rotate(angle + 90);
-      
-    //     pg.beginShape();
-    //     pg.fill(lightColour[lightClrSelect]);
-    //     pg.stroke(0);
-    //     pg.strokeWeight(0.5);
-        
-        
-    //     pg.translate(-100,-100);
-         
-    
-    //     pg.vertex(102,106);
-    //     pg.bezierVertex(103,106,108,99,103,91);
-    //     pg.bezierVertex(99,84,99,86,97,82);
-    //     pg.vertex(97,82);
-    //     pg.bezierVertex(96,86,97,84,93,91);
-    //     pg.bezierVertex(88,99,93,106,93,106);
-    //     pg.bezierVertex(93,106,97,112,103,106);
-    //     pg.endShape();
-    
-    //     pg.pop();// ending that system 
-    //   }
-    
-    //   //petals inner
-    //   //for loop for duplicating petals and radially distributing them
-    
-    //   for (let x = 0; x < petal2Amount; x++) {
-        
-    //     let angle = x * (360 / petal2Amount) - 30; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
-        
-    //     let petal2X = centerX + petals2Radius * pg.cos(angle);   // this sets the x and y position of each petal using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
-    //     let petal2Y = centerY + petals2Radius * pg.sin(angle);
-    
-    
-    //     pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
-        
-    //     pg.translate(petal2X, petal2Y); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-    //       pg.rotate(angle + 90);
-      
-    //     pg.beginShape();
-    //     pg.fill(bgColour[bgClrSelect]);
-    //     pg.stroke(0);
-    //     pg.strokeWeight(0.5);
-    //     pg.scale(0.75);
-    //     pg.translate(-100,-100);
-    //     pg.vertex(102,106);
-    //     pg.bezierVertex(103,106,108,99,103,91);
-    //     pg.bezierVertex(99,84,99,86,97,82);
-    //     pg.vertex(97,82);
-    //     pg.bezierVertex(96,86,97,84,93,91);
-    //     pg.bezierVertex(88,99,93,106,93,106);
-    //     pg.bezierVertex(93,106,97,112,103,106);
-    //     pg.endShape();
-    
-    //     pg.pop();// ending that system 
-    //   }
-    
-    
-    // ///triangles
-    
-    //   for (let x = 0; x < triangleAmount; x++) {
-        
-    //     let angle = x * (360 / triangleAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
-        
-    //     let triangleX = centerX + triangleRadius * pg.cos(angle);   // this sets the x and y position of each petal using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
-    //     let triangleY = centerY + triangleRadius * pg.sin(angle);
-    
-       
-    //     pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
-        
-    //     pg.translate(triangleX, triangleY); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-    //       pg.rotate(angle + 90);
-      
-      
-    //     pg.fill(lightColour[lightClrSelect]);
-    //     pg.stroke(0);
-    //     pg.strokeWeight(0.5);
-    
-    //     let triW= 5;
-    //     let triH= 10;
-    //     pg.triangle(0,0,-triW,triH,triW,triH);
-        
-        
-    //     pg.pop();// ending that system 
-    //   }
-    
-      
-    //   // center diamond
-    // pg.push();
-    // pg.fill(bgColour[bgClrSelect]);
-    // pg.stroke(0);
-    // pg.strokeWeight(0.25);
-    // pg.rectMode(CENTER);
-    // pg.translate(centerX,centerY); //setting to center of mySymbol grid
-    
-    // let rectSize2 = 15;
-    
-    // pg.rotate(45); //rotating 45 degrees to make diamond
-    // pg.ellipse(0,0,rectSize2);
-    
-    // pg.pop();
-    
-    
-    
-    // }
     
    
     function filigree(pg){
@@ -1553,4 +1408,26 @@ let rectSize= 5; //size of center diamond
     
     
     
-    
+    function verticalMirrorFiligree(){
+//vertical mirroring // turn into angles for conrers, centre version and outer middle edges version
+
+pg.push();
+
+pg.translate(-50,0) //setting it to 0 for middle sections of edges - also set it up to vertically mirror instead of horiz
+//horizontal mirroring
+// pg.push();
+
+pg.push();
+
+filigree(pg);
+pg.pop();
+
+// mirrored filigree
+pg.push();
+pg.translate(0, filGapTranslateDisVert); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+pg.scale(1, -1); // this mirrors the filigree by flipping on x axis
+filigree(pg);
+pg.pop();
+
+
+    }
