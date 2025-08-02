@@ -27,6 +27,9 @@ let radius2 =10; //sets radius of ellipses
 let rectSize= 5; //size of center diamond
 let CenterRectSelect =true; //trigger for if statement that toggles between center having either diamond and ellipse
 
+let petalAmount = 5;
+let radius3 = 20;
+
 
 
 
@@ -151,19 +154,43 @@ function flower1(pg){
   let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
   
 
-//petals
-pg.push();
-pg.beginShape();
-pg.translate(-75,-75);
-pg.vertex(102,106);
-pg.bezierVertex(103,106,108,99,103,91);
-pg.bezierVertex(99,84,99,86,97,82);
-pg.vertex(97,82);
-pg.bezierVertex(96,86,97,84,93,91);
-pg.bezierVertex(88,99,93,106,93,106);
-pg.bezierVertex(93,106,97,112,103,106);
-pg.endShape();
-pg.pop();
+  pg.angleMode(DEGREES); //changing from radians
+
+  //petals
+  //for loop for duplicating petals and radially distributing them
+  for (let x = 0; x < petalAmount; x++) {
+    
+    let angle = x * (360 / petalAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
+    
+    let petalX = centerX + radius3 * pg.cos(angle);   // this sets the x and y position of each petal using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
+    let petalY = centerY + radius3 * pg.sin(angle);
+
+   
+    pg.push(); //putting the flower into its own system so it doesn't use global rotation etc. 
+    
+    pg.translate(petalX, petalY); //setting the x and y position of the petal so that it follows the radial distribution
+    
+   
+      pg.rotate(angle + 90);
+  
+    pg.beginShape();
+    pg.fill(lightColour[lightClrSelect]);
+    
+    pg.translate(-75,-75);
+    pg.vertex(102,106);
+    pg.bezierVertex(103,106,108,99,103,91);
+    pg.bezierVertex(99,84,99,86,97,82);
+    pg.vertex(97,82);
+    pg.bezierVertex(96,86,97,84,93,91);
+    pg.bezierVertex(88,99,93,106,93,106);
+    pg.bezierVertex(93,106,97,112,103,106);
+    pg.endShape();
+
+    pg.pop();// ending that system 
+  }
+
+
+
 
 
 
@@ -205,6 +232,7 @@ pg.angleMode(DEGREES);
 }
 }
 
+
 // center diamond or ellipse
 pg.push();
 pg.fill(lightColour[lightClrSelect]);
@@ -226,6 +254,7 @@ pg.pop();
 
 
 }
+
 
 function flower2 (pg) {
 //radial flower
