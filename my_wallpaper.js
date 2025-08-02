@@ -14,7 +14,7 @@ let flowerAmount = 10; //amount of flowers
 let radius=60; //circular path radius
 let centerX=100; //centre point of circular path and canvas
 let centerY=100;
-let flower180 = false; //toggle every even flower to be 180 degrees flipped if true
+let flower180 = false; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
 
 
 
@@ -25,7 +25,7 @@ let centerDotSize= 1.5; //size of dots
 let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
 let radius2 =10; //sets radius of ellipses
 let rectSize= 5; //size of center diamond
-let CenterRectSelect =true; //toggles between center having either diamond and ellipse
+let CenterRectSelect =true; //trigger for if statement that toggles between center having either diamond and ellipse
 
 
 
@@ -151,6 +151,31 @@ function flower1(pg){
   let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
   
 
+//petals
+pg.push();
+pg.beginShape();
+pg.translate(-75,-75);
+pg.vertex(102,106);
+pg.bezierVertex(103,106,108,99,103,91);
+pg.bezierVertex(99,84,99,86,97,82);
+pg.vertex(97,82);
+pg.bezierVertex(96,86,97,84,93,91);
+pg.bezierVertex(88,99,93,106,93,106);
+pg.bezierVertex(93,106,97,112,103,106);
+pg.endShape();
+pg.pop();
+
+
+
+
+
+
+
+  //center dots background
+pg.fill(lightColour[lightClrSelect]);
+pg.stroke(0.1);
+pg.ellipse(centerX,centerY,radius2+8);
+
 // center dots
 let ringSpace = (radius2/ dotRows); ///variable for spacing out the rings of ellipses
 
@@ -198,8 +223,7 @@ else {
 }
 pg.pop();
 
-//finish petals and geometric triangles
-//set up array or if statement to toggle between multiple flowers, 1 flower etc in the middle
+
 
 }
 
