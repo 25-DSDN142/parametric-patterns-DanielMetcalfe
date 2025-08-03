@@ -2,9 +2,9 @@ let centerX=100; //centre point of circular paths and canvas
 let centerY=100;
 
 //global colour settings- choose colours for composition
-let lightClrSelect =0; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green
-let darkClrSelect =0; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green
-let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green;
+let lightClrSelect =5; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green,2 = orange,3= yellow, 4= pink, 5 = purple;
+let darkClrSelect =5; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green , 2= orange, 3= yellow, 4 = pink, 5 =purple;
+let bgClrSelect= 5; //pg.background colour switch, 0= orange, 1 = blue, 2= green, 3 = yellow, 4 = pink,5 = purple;
 
 
 //on/off switches and selctors for motifs
@@ -50,6 +50,8 @@ let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirror
 let filigreeScale = 0.75;
 
 
+
+
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(DEVELOP_GLYPH);
   pWallpaper.resolution(NINE_PORTRAIT);
@@ -80,7 +82,7 @@ function rawPattern() {
 //this is where the pattern is drawn, it is drawn onto a pg object so that it can be rasterised for the cross stich effect, then the crosstich effect is called in mySymbol to render it
  
 let pg = createGraphics(200, 200); //creating graphics object to draw on and rasterise
- let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; //creating colour array to easily switch background colours. p5 array reference page helped
+ let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149),color(255,238,80),color(255,59,114),color(146,131,255)]; //0 = orange,1 = blue, 2=blue, 3= yellow, 4 = pink; 5 = purple. creating colour array to easily switch background colours. p5 array reference page helped
   
   pg.background(bgColour[bgClrSelect]);//settingh graphics object background, feels redundant but allows me to have a black background for the whole sketch and a colourful background that gets crosstiched, the black background is important as it gives the crossstich effect
   pg.angleMode(DEGREES); //changing from radians
@@ -356,8 +358,8 @@ pg.push();
 function radialFlowerDraw (pg) {
   // drawing the flower for the radial distributed rings
     pg.push();
-    let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from
-    let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
+    let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
+    let darkColour = [color(32, 59, 114), color (33,112,87),color(241, 87, 85),color(255,238,80),color(255,59,114),color(87,0,255)]; //0= blue, 1 = green, 2 =orange, 3= yellow, 4 = pink, 5= purple;
     
   
     //drawing the flower so that it can be used on the raw pattern graphics object, made it its own function so that the raw pattern is cleaner since I will be drawing multiple things on it
@@ -679,11 +681,11 @@ function radialFlowerDraw (pg) {
     function centerAndCornerFlowerDraw(pg){
       //Creating the center flower
     
-      let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
-      let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
-      let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; //creating colour array to easily switch background colours. p5 array reference page helped
+     let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
+     let darkColour = [color(32, 59, 114), color (33,112,87),color(241, 87, 85),color(255,238,80),color(255,59,114),color(87,0,255)]; //0= blue, 1 = green, 2 =orange, 3= yellow, 4 = pink, 5= purple;
+     let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149),color(255,238,80),color(255,59,114),color(146,131,255)]; //0 = orange,1 = blue, 2=blue, 3= yellow, 4 = pink; 5 = purple. creating colour array to easily switch background colours. p5 array reference page helped   
       
-      let centerDotAmount= 20; //amount of dots on each row
+     let centerDotAmount= 20; //amount of dots on each row
       let centerDotSize= 1.5; //size of dots
       let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
       let radius2 =10; //sets radius of ellipses  
@@ -856,19 +858,17 @@ function radialFlowerDraw (pg) {
     function geometricShape(pg){
       //Creating the geometric shape
     
-      let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
-      let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
-      let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)];
+     let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
+    let darkColour = [color(32, 59, 114), color (33,112,87),color(241, 87, 85),color(255,238,80),color(255,59,114),color(87,0,255)]; //0= blue, 1 = green, 2 =orange, 3= yellow, 4 = pink, 5= purple;
+    let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149),color(255,238,80),color(255,59,114),color(146,131,255)]; //0 = orange,1 = blue, 2=blue, 3= yellow, 4 = pink; 5 = purple. creating colour array to easily switch background colours. p5 array reference page helped
       
       let triangleAmount= 8;
       let triangleRadius= 15;
     pg.push();
       pg.angleMode(DEGREES); //changing from radians
     
-      //petals tangent
-      //for loop for duplicating petals and radially distributing them
-    // pg.scale(0.9);
-    // pg.translate(11,10);
+  
+   
        for (let x = 0; x < petalAmount; x++) {
         
         let angle = x * (360 / petalAmount) - 85; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -1033,9 +1033,9 @@ function radialFlowerDraw (pg) {
     function filigree(pg){
       //drawing the filigree using bezierVertexs so I can fill them with colours
 
-      let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
-      let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
-      let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; 
+     let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
+    let darkColour = [color(32, 59, 114), color (33,112,87),color(241, 87, 85),color(255,238,80),color(255,59,114),color(87,0,255)]; //0= blue, 1 = green, 2 =orange, 3= yellow, 4 = pink, 5= purple;
+      
       
       pg.push();
       pg.stroke(0);
