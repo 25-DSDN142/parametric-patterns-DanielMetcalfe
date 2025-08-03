@@ -46,7 +46,7 @@ let cornerXPos = true; //true = corners, selects between corners or centre edge 
 
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(GRID_WALLPAPER);
-  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.resolution(A3);
   pWallpaper.show_guide(false);
 
   pWallpaper.grid_settings.cell_width  = 200;
