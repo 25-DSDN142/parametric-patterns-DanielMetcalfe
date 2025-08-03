@@ -1,9 +1,3 @@
-
-//cross stich settings
-let gridsX = 200; //adjusts amount of crossstich dots
-let gridsY = 200;
-
-
 let centerX=100; //centre point of circular paths and canvas
 let centerY=100;
 
@@ -12,57 +6,48 @@ let lightClrSelect =0; //setting up variable to easily switch between the lightc
 let darkClrSelect =0; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green
 let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green;
 
-//radial flower ring 1 settings
-let flowerAmount =10; //amount of flowers
-let ringRadius1=65; //circular path radius
-let flower180 = false; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
 
-
-//radial flower ring 2 settings
-let flowerAmount2 =5; //amount of flowers
-let ringRadius2=25; //circular path radius ///20 and 25 looks cool when set to 5 flowers
-let flowerRing2invert= true; //inverts the colours of flower ring 2let flower1802 = false;
-let flower1802 = false;
-
-//radial flower ring 3 settings
-let flowerAmount3 =40; //amount of flowers ////4 gives geometric look when paired with 80 radius
-let ringRadius3=100; //circular path radius ///20 and 25 looks cool when set to 5 flowers
-let flowerRing3invert= true; //inverts the colours of flower ring 2
-let flower1803 = false;
-
-
-///center and corner flower
-let CenterRectSelect =true; //trigger for if statement that toggles between center having either diamond and ellipse at center of flower
-let petalAmount = 10; 
-let petals1Radius = 15; 
-let petal2Amount = 10;
-let petals2Radius = 15;
-
-
-
-
-
+//on/off switches and selctors for motifs
 
 //center motif selector
 let centerObject = 2; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigree, 3 = vertically mirrored filigree, 4= no middle motif
 
+//corner motif selector
+let cornerObject= 2; //0 = geometric, 1 = flower, 2 = filigree 1, 3 = filigree 2, 4 = ring 2
+
+//radial flower rings on/off
+let ring1= true;
+let ring3 =false;
+
+
+//radial flower ring 1 settings
+let flowerAmount =10; //amount of flowers
+let ringRadius1=70; //circular path radius
+let radialFlower180 = true; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
+
+//radial flower ring 2 settings
+let flowerAmount2 =5; //amount of flowers
+let ringRadius2=25; //circular path radius ///20 and 25 looks cool when set to 5 flowers
+let radialFlower1802 =false;
+
+//radial flower ring 3 settings
+let flowerAmount3 =40; //amount of flowers ////4 gives geometric look when paired with 80 radius
+let ringRadius3=100; //circular path radius ///20 and 25 looks cool when set to 5 flowers
+let radialFlower1803 = true;
+
+
+///center and corner flower
+let petalAmount = 10; //adjust these
+let petals1Radius = 15;
 
 //corner motif settings
-let cornerScale =1;
-let geometricCorner = true;
+let cornerScale =1; //adjust the scale of the flower or geometric pattern
 let cornerXPos = true; //selects between corners or centre edge reflections for motif
 
 //filifree settings- original mirroring gaps
 let filGapTranslateDisHoriz= 148; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
 let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
 let filigreeScale = 0.75;
-
-//for horizontal mirroed filigree
-let DisHorizQuartersX = 170;//adjusts the distance between the two X halves of filigree quarters
-let DisHorizQuartersY = 180; //adjusts the distance between the two Y halves of filigree quarters
-
-//for vertical mirrored filigree
-let DisHorizQuartersX2 = 20;//adjusts the distance between the two X halves of filigree quarters
 
 
 function setup_wallpaper(pWallpaper) {
@@ -92,32 +77,50 @@ function my_symbol() {
   
 
 function rawPattern() {
-//this is where the pattern is drawn, it is drawn onto a pg object so that it can be rasterised for the cross stich effect
+//this is where the pattern is drawn, it is drawn onto a pg object so that it can be rasterised for the cross stich effect, then the crosstich effect is called in mySymbol to render it
  
-let pg = createGraphics(200, 200); //creating graphics object
+let pg = createGraphics(200, 200); //creating graphics object to draw on and rasterise
  let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; //creating colour array to easily switch background colours. p5 array reference page helped
   
   pg.background(bgColour[bgClrSelect]);//settingh graphics object background, feels redundant but allows me to have a black background for the whole sketch and a colourful background that gets crosstiched, the black background is important as it gives the crossstich effect
   pg.angleMode(DEGREES); //changing from radians
 
 
-  //corner motif
-  // cornerMotif(pg);
+  if (ring1 == true){ //on/off switch for radial ring 1
+ radialFlowerDrawRing1(pg); 
+  }
+  if (ring3 == true){//on/off switch for radial ring 1
+  radialFlowerDrawRing3(pg);
+  }
 
-  //flower ring 1
- radialFlowerRing1(pg);
- 
- //flower ring 2- center
-//  radialFlowerRing2(pg);
+  
 
- 
-  //flower ring 3- outer
-//  radialFlowerRing3(pg);
-
-//Center motif
+//Center motif is called away, selection between which motif is done with if statements inside cornerMotif 
 centerMotif(pg);
 
 
+//corner motif selector logic
+ 
+if (cornerObject == 0) {
+    // Geometric shape in corners
+    cornerMotif(pg); // geometric shape is called inside cornerMotif as there is a for loop in there distributing them to the corner so I could just use one copy of the drawing and it woul have made it messier to read in this function
+  } else if (cornerObject == 1) {
+    // Flower in corners
+    cornerMotif(pg); // flower is called inside cornerMotif because of for loop 
+  }
+
+  if (cornerObject==2){ //corner filigree
+    pg.push();
+    cornerFiligree1(pg); 
+    pg.pop();
+        }
+  else if (cornerObject==3 ){
+    pg.push();
+          edgeFiligree2(pg); 
+          pg.pop();
+              }
+
+  
   return pg; // this tells the function to output the above code;
 }
 
@@ -125,6 +128,12 @@ centerMotif(pg);
 
 function crossstitch(pattern) {
 // graphics object rasterisation technique learnt through Tim Roedenbroker pGraphics processing course. I rewrote it in p5 from a previous processing sketch of mine with variables that work for this context.
+
+
+//cross stich settings
+let gridsX = 200; //adjusts amount of crossstich dots
+let gridsY = 200;
+
 
 pattern.loadPixels();
   let tileW = 200 / gridsX; // setting the amount of crossstich dots by dividing the mySymbol 200 x 200 size by the adjustable variables gridsX and gridsY
@@ -157,69 +166,72 @@ pattern.loadPixels();
 function cornerMotif(pg){
   //function to clean up rawPattern function so that it is easier to work with
 
-  let flowerMiddleX = [0, 200,0, 200];
+ // the flower and geometric shape are distributed to the corners using a for loop
+ 
+ let flowerMiddleX = [0, 200,0, 200];  //array for the x an y coordinates of where to line up centers to corner
   let flowerMiddleY = [0, 0, 200, 200];
 
-  let flowerMiddleX2 = [0, 100,100, 200];
+  let flowerMiddleX2 = [0, 100,100, 200]; // lines up flower or geometric shape with halfway point of sketch instead of corners for added flexibility
   let flowerMiddleY2 = [100, 0, 200, 100];
 
-
- 
-  for (let x = 0; x < 4; x++) {
+   for (let x = 0; x < 4; x++) {
     pg.push();
-    if( cornerXPos == true){
+    if( cornerXPos == true){  //toggle for flower or geometric shape being in corner or at halfway point of the edge of sketch
   
     pg.translate(flowerMiddleX[x], flowerMiddleY[x]); 
   } 
-  else {pg.translate(flowerMiddleX2[x], flowerMiddleY2[x]);
+  else {pg.translate(flowerMiddleX2[x], flowerMiddleY2[x]); 
 
   }
-    pg.scale(cornerScale);
-    pg.translate(-centerX, -centerY);                  
+    pg.scale(cornerScale); //adjustable sizing for corner flower and geometric shape
+    pg.translate(-centerX, -centerY); //centering in it to sketch              
    
-   //cahnge to array selctor
-   if (geometricCorner==true){
+ //selector betwen flower and geometric shape for corner
+   if (cornerObject==0){
     geometricShape(pg);
    }
 
-   else {flower1(pg)}
-    pg.pop();
-
-    
+   else if (cornerObject==1) {
+    centerAndCornerFlowerDraw(pg)
   }
+  
+    pg.pop();
+    
+        }
+  
 }
 
 function centerMotif(pg){
 // if statements for selecting which function is displayed in the center
   //cleans up rawPattern function to make it easier to work with
- 
+ pg.push();
 if (centerObject == 0){ //if statement toggle between motifs 
     geometricShape(pg); // center geometric shape
    
   }
   else if(centerObject == 1) {
-    flower1(pg); ///center flower
+    centerAndCornerFlowerDraw(pg); ///center flower
   }
 
   else if(centerObject == 2) {
-    horizFilMirQuarters(pg); //center Horizontally reflected filigree quarters
+    centerFiligree1(pg); //center Horizontally reflected filigree quarters
   
   }
 
   else if(centerObject == 3) {
-    vertFilMirQuarters(pg); //center vertically reflected filigree quarters
+    centerFiligree2(pg); //center vertically reflected filigree quarters
   }
 
 else if (centerObject == 4){
-
-
+ radialFlowerDrawRing2(pg); // center flower ring
 }
+pg.pop();
 }
-function radialFlowerRing1(pg){
+function radialFlowerDrawRing1(pg){
   //function for cleaning up rawPattern to make it easier to work with
   //seperating them out into multiple different functions allows them to be used with independenat settings and turned on and off easily
 
- //for loop for duplicating flower2 and radially distributing it
+ //for loop for duplicating radialFlowerDraw and radially distributing it
  for (let x = 0; x < flowerAmount; x++) {
     
   let angle = x * (360 / flowerAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -235,8 +247,8 @@ function radialFlowerRing1(pg){
   
   //setting up true false switch using if statement so that the 180 degree flip can be turned on and off to create flexibility
  
- //if flower180 variable = true
-  if (flower180 == true) {
+ //if radialFlower180 variable = true
+  if (radialFlower180 == true) {
   
     // flipping every even flower using if statement. 
     if (x % 2 == 0) {
@@ -245,22 +257,22 @@ function radialFlowerRing1(pg){
       pg.rotate(angle + 270); //this is the flower pointed in to the centre, using 270 instead of 90 to flip it
     }
   } 
-  //if flower180 variable =false;
+  //if radialFlower180 variable =false;
   else {
     pg.rotate(angle + 90);
   }
 
-  flower2(pg, flowerFlip); // imaging the flower2 graphics object
+  radialFlowerDraw(pg, flowerFlip); // imaging the radialFlowerDraw graphics object
   pg.pop();// ending that system 
 }
 
 }
 
 
- function radialFlowerRing2(pg){
+ function radialFlowerDrawRing2(pg){
     //function for cleaning up rawPattern to make it easier to work with
-
-    //for loop for duplicating flower2 and radially distributing it
+pg.push();
+    //for loop for duplicating radialFlowerDraw and radially distributing it
     for (let x = 0; x < flowerAmount2; x++) {
        
      let angle = x * (360 / flowerAmount2) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -276,8 +288,8 @@ function radialFlowerRing1(pg){
      
      //setting up true false switch using if statement so that the 180 degree flip can be turned on and off to create flexibility
     
-    //if flower180 variable = true
-     if (flower1802 == true) {
+    //if radialFlower180 variable = true
+     if (radialFlower1802 == true) {
      
        // flipping every even flower using if statement. 
        if (x % 2 == 0) {
@@ -286,25 +298,22 @@ function radialFlowerRing1(pg){
          pg.rotate(angle + 90); //this is the flower pointed in to the centre, using 270 instead of 90 to flip it
        }
      } 
-     //if flower180 variable =false;
+     //if radialFlower180 variable =false;
      else {
        pg.rotate(angle + 90);
      }
-   if (flowerRing2invert==true){ //inverting colour toggle
-    flower2invert(pg, flowerFlip2); // imaging the flower2 graphics object
-   }
-   else{
-     flower2(pg, flowerFlip2); // imaging the flower2 graphics object
-   }
+ 
+     radialFlowerDraw(pg, flowerFlip2); // imaging the radialFlowerDraw graphics object
+   
      pg.pop();// ending that system 
    }
-   
+   pg.pop();
    }
 
-   function radialFlowerRing3(pg){
+   function radialFlowerDrawRing3(pg){
       //function for cleaning up rawPattern to make it easier to work with
-
-    //for loop for duplicating flower2 and radially distributing it
+pg.push();
+    //for loop for duplicating radialFlowerDraw and radially distributing it
     for (let x = 0; x < flowerAmount3; x++) {
        
      let angle = x * (360 / flowerAmount3) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -320,8 +329,8 @@ function radialFlowerRing1(pg){
      
      //setting up true false switch using if statement so that the 180 degree flip can be turned on and off to create flexibility
     
-    //if flower180 variable = true
-     if (flower1803 == true) {
+    //if radialFlower180 variable = true
+     if (radialFlower1803 == true) {
      
        // flipping every even flower using if statement. 
        if (x % 2 == 0) {
@@ -330,26 +339,23 @@ function radialFlowerRing1(pg){
          pg.rotate(angle + 90); //this is the flower pointed in to the centre, using 270 instead of 90 to flip it
        }
      } 
-     //if flower180 variable =false;
+     //if radialFlower180 variable =false;
      else {
        pg.rotate(angle + 90);
      }
-   if (flowerRing3invert==true){
-    flower2invert(pg, flowerFlip2); // imaging the flower2 graphics object
-   }
-   else{
-     flower2(pg, flowerFlip2); // imaging the flower2 graphics object
-   }
+   
+     radialFlowerDraw(pg, flowerFlip2); // imaging the radialFlowerDraw graphics object
+   
      pg.pop();// ending that system 
    }
-   
+   pg.pop();
    }
 
 
 
-function flower2 (pg) {
+function radialFlowerDraw (pg) {
   // drawing the flower for the radial distributed rings
-    
+    pg.push();
     let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from
     let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
     
@@ -666,297 +672,11 @@ function flower2 (pg) {
    
   
     pg.pop();//ending that system
-  }
-  
-function flower2invert(pg) {
-    // Inverted: swap all lightColour and darkColour usages
-    let lightColour = [color(69, 128, 194), color(149, 239, 149)];
-    let darkColour = [color(32, 59, 114), color(33, 112, 87)];
-  
-    pg.stroke(0);
-    pg.strokeWeight(0.5);
-  
-    pg.push();
-    pg.scale(0.5);
-    pg.translate(-100, -100);
-  
-    // All lightColour fills become darkColour, and vice versa
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(83, 61);
-    pg.bezierVertex(84, 63, 84, 64, 85, 66);
-    pg.vertex(85, 66);
-    pg.bezierVertex(84, 72, 79, 76, 78, 82);
-    pg.bezierVertex(76, 88, 77, 94, 77, 94);
-    pg.bezierVertex(67, 80, 80, 73, 83, 61);
-    pg.vertex(83, 61);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(60, 73);
-    pg.bezierVertex(71, 74, 71, 87, 77, 93);
-    pg.bezierVertex(77, 93, 78, 96, 78, 96);
-    pg.bezierVertex(78, 96, 76, 95, 72, 95);
-    pg.bezierVertex(64, 90, 67, 79, 60, 73);
-    pg.vertex(60, 73);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(99, 115);
-    pg.bezierVertex(95, 108, 86, 107, 82, 101);
-    pg.bezierVertex(82, 101, 80, 99, 78, 96);
-    pg.bezierVertex(74, 95, 69, 95, 65, 97);
-    pg.vertex(65, 97);
-    pg.bezierVertex(73, 97, 76, 105, 82, 109);
-    pg.bezierVertex(87, 113, 94, 110, 99, 115);
-    pg.vertex(99, 115);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(99, 115);
-    pg.bezierVertex(95, 108, 86, 107, 82, 101);
-    pg.bezierVertex(76, 95, 75, 85, 81, 79);
-    pg.vertex(81, 80);
-    pg.bezierVertex(77, 90, 86, 90, 85, 97);
-    pg.vertex(85, 97);
-    pg.bezierVertex(93, 99, 97, 108, 99, 115);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(86, 118);
-    pg.bezierVertex(83, 116, 79, 116, 76, 117);
-    pg.vertex(76, 117);
-    pg.bezierVertex(80, 118, 80, 121, 82, 124);
-    pg.bezierVertex(88, 127, 96, 125, 100, 130);
-    pg.vertex(100, 130);
-    pg.bezierVertex(98, 124, 92, 116, 86, 118);
-    pg.vertex(86, 118);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(115, 118);
-    pg.bezierVertex(108, 116, 102, 124, 100, 130);
-    pg.vertex(100, 130);
-    pg.bezierVertex(105, 125, 113, 127, 118, 124);
-    pg.bezierVertex(120, 121, 121, 118, 125, 117);
-    pg.vertex(125, 117);
-    pg.bezierVertex(122, 116, 118, 116, 115, 118);
-    pg.vertex(115, 118);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(101, 142);
-    pg.bezierVertex(101, 143, 102, 145, 103, 146);
-    pg.vertex(103, 146);
-    pg.bezierVertex(102, 147, 101, 149, 100, 150);
-    pg.vertex(100, 150);
-    pg.bezierVertex(100, 149, 99, 147, 98, 146);
-    pg.vertex(98, 146);
-    pg.bezierVertex(99, 145, 100, 143, 100, 142);
-    pg.vertex(101, 142);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(104, 115);
-    pg.bezierVertex(103, 115, 101, 108, 101, 108);
-    pg.bezierVertex(101, 108, 100, 114, 100, 115);
-    pg.bezierVertex(99, 115, 99, 115, 98, 114);
-    pg.bezierVertex(98, 114, 95, 112, 93, 112);
-    pg.bezierVertex(99, 116, 100, 124, 100, 130);
-    pg.vertex(101, 129);
-    pg.bezierVertex(101, 123, 103, 116, 108, 113);
-    pg.bezierVertex(108, 113, 110, 111, 111, 111);
-    pg.bezierVertex(111, 111, 106, 112, 104, 115);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(99, 115);
-    pg.vertex(100, 115);
-    pg.bezierVertex(101, 111, 102, 109, 101, 105);
-    pg.vertex(101, 105);
-    pg.bezierVertex(100, 100, 96, 95, 91, 93);
-    pg.vertex(91, 93);
-    pg.bezierVertex(92, 88, 84, 87, 85, 81);
-    pg.vertex(85, 82);
-    pg.bezierVertex(83, 84, 82, 87, 82, 90);
-    pg.bezierVertex(82, 90, 86, 93, 86, 97);
-    pg.vertex(85, 97);
-    pg.bezierVertex(93, 99, 97, 108, 99, 115);
-    pg.vertex(100, 115);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(74, 87);
-    pg.bezierVertex(74, 87, 71, 80, 67, 76);
-    pg.bezierVertex(69, 73, 73, 74, 76, 75);
-    pg.bezierVertex(76, 75, 74, 78, 74, 81);
-    pg.bezierVertex(73, 84, 73, 87, 74, 87);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(82, 89);
-    pg.bezierVertex(82, 89, 80, 87, 80, 85);
-    pg.bezierVertex(80, 85, 81, 80, 81, 80);
-    pg.bezierVertex(80, 80, 78, 82, 78, 82);
-    pg.bezierVertex(79, 76, 84, 72, 85, 66);
-    pg.vertex(85, 66);
-    pg.bezierVertex(88, 65, 91, 68, 90, 71);
-    pg.vertex(90, 71);
-    pg.bezierVertex(87, 73, 84, 77, 85, 81);
-    pg.bezierVertex(85, 81, 82, 84, 82, 89);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(101, 59);
-    pg.bezierVertex(105, 69, 116, 69, 110, 83);
-    pg.vertex(110, 83);
-    pg.bezierVertex(105, 80, 98, 80, 93, 84);
-    pg.vertex(92, 83);
-    pg.bezierVertex(86, 70, 97, 69, 101, 59);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(93, 84);
-    pg.bezierVertex(89, 76, 91, 72, 94, 69);
-    pg.vertex(93, 69);
-    pg.bezierVertex(87, 72, 85, 76, 85, 81);
-    pg.bezierVertex(85, 81, 85, 83, 87, 86);
-    pg.bezierVertex(88, 88, 89, 88, 89, 88);
-    pg.bezierVertex(89, 88, 91, 86, 93, 84);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(120, 60);
-    pg.bezierVertex(123, 72, 135, 79, 125, 93);
-    pg.bezierVertex(125, 93, 127, 87, 124, 81);
-    pg.bezierVertex(124, 75, 118, 71, 118, 65);
-    pg.vertex(118, 65);
-    pg.bezierVertex(118, 63, 119, 62, 120, 60);
-    pg.vertex(120, 60);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(142, 72);
-    pg.bezierVertex(136, 78, 139, 89, 131, 94);
-    pg.bezierVertex(126, 94, 124, 95, 124, 95);
-    pg.bezierVertex(124, 95, 125, 92, 125, 92);
-    pg.bezierVertex(131, 86, 131, 73, 142, 72);
-    pg.vertex(142, 72);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(104, 114);
-    pg.bezierVertex(108, 110, 116, 112, 121, 108);
-    pg.bezierVertex(127, 104, 129, 96, 137, 96);
-    pg.vertex(137, 96);
-    pg.bezierVertex(133, 94, 128, 94, 124, 96);
-    pg.bezierVertex(122, 98, 121, 100, 121, 100);
-    pg.bezierVertex(116, 106, 107, 107, 103, 114);
-    pg.vertex(104, 114);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(103, 114);
-    pg.bezierVertex(105, 107, 109, 98, 117, 96);
-    pg.vertex(117, 96);
-    pg.bezierVertex(116, 89, 125, 89, 122, 79);
-    pg.vertex(122, 78);
-    pg.bezierVertex(128, 84, 127, 94, 121, 100);
-    pg.bezierVertex(116, 106, 107, 107, 103, 114);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(103, 114);
-    pg.vertex(103, 114);
-    pg.bezierVertex(102, 110, 101, 108, 101, 104);
-    pg.vertex(101, 104);
-    pg.bezierVertex(102, 99, 107, 94, 111, 92);
-    pg.vertex(111, 92);
-    pg.bezierVertex(110, 87, 118, 86, 118, 80);
-    pg.vertex(118, 81);
-    pg.bezierVertex(120, 83, 121, 86, 120, 89);
-    pg.bezierVertex(120, 89, 117, 92, 117, 96);
-    pg.vertex(117, 96);
-    pg.bezierVertex(109, 98, 105, 107, 103, 114);
-    pg.vertex(103, 114);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(129, 87);
-    pg.bezierVertex(129, 87, 131, 80, 135, 75);
-    pg.bezierVertex(133, 72, 129, 73, 127, 75);
-    pg.bezierVertex(127, 75, 128, 77, 129, 80);
-    pg.bezierVertex(129, 83, 129, 86, 129, 87);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(120, 89);
-    pg.bezierVertex(120, 89, 122, 87, 123, 84);
-    pg.bezierVertex(123, 84, 122, 79, 122, 79);
-    pg.bezierVertex(123, 79, 124, 81, 124, 81);
-    pg.bezierVertex(124, 75, 118, 71, 118, 65);
-    pg.vertex(117, 65);
-    pg.bezierVertex(115, 65, 112, 67, 112, 70);
-    pg.vertex(112, 70);
-    pg.bezierVertex(116, 73, 118, 76, 118, 80);
-    pg.bezierVertex(118, 80, 120, 83, 120, 89);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(113, 87);
-    pg.bezierVertex(113, 87, 114, 87, 116, 85);
-    pg.bezierVertex(116, 85, 118, 80, 118, 80);
-    pg.bezierVertex(118, 76, 115, 71, 109, 68);
-    pg.vertex(109, 68);
-    pg.bezierVertex(112, 71, 114, 75, 110, 83);
-    pg.bezierVertex(112, 85, 113, 87, 113, 87);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(darkColour[darkClrSelect]);
-    pg.vertex(89, 88);
-    pg.bezierVertex(95, 78, 108, 79, 113, 87);
-    pg.bezierVertex(113, 87, 111, 88, 111, 92);
-    pg.vertex(111, 92);
-    pg.bezierVertex(101, 97, 101, 105, 101, 105);
-    pg.vertex(101, 106);
-    pg.bezierVertex(101, 106, 101, 98, 91, 93);
-    pg.bezierVertex(91, 93, 92, 91, 89, 88);
-    pg.endShape();
-  
-    pg.beginShape();
-    pg.fill(lightColour[lightClrSelect]);
-    pg.vertex(100, 142);
-    pg.vertex(100, 129);
-    pg.vertex(101, 129);
-    pg.vertex(101, 142);
-    pg.endShape();
-  
     pg.pop();
   }
+  
 
-
-    function flower1(pg){
+    function centerAndCornerFlowerDraw(pg){
       //Creating the center flower
     
       let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
@@ -968,14 +688,14 @@ function flower2invert(pg) {
       let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
       let radius2 =10; //sets radius of ellipses  
       let rectSize= 5; //size of center diamond
-    
+
+      
+    pg.push();
       pg.angleMode(DEGREES); //changing from radians
     
       //petals outer
-      
       //for loop for duplicating petals and radially distributing them
-    
-       for (let x = 0; x < petalAmount; x++) {
+    for (let x = 0; x < petalAmount; x++) {
         
         let angle = x * (360 / petalAmount) - 85; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
         
@@ -989,7 +709,6 @@ function flower2invert(pg) {
         pg.rotate(angle + 90);
       
         pg.beginShape();
-
         pg.fill(darkColour[darkClrSelect]);
         pg.stroke(0);
         pg.strokeWeight(0.5);
@@ -1010,6 +729,9 @@ function flower2invert(pg) {
     
       //petals inner
       //for loop for duplicating petals and radially distributing them
+      let petal2Amount = petalAmount;
+      let petals2Radius =petals1Radius;
+
     
       for (let x = 0; x < petal2Amount; x++) {
         
@@ -1022,9 +744,7 @@ function flower2invert(pg) {
         pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
         
         pg.translate(petal2X, petal2Y); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-          pg.rotate(angle + 90);
+        pg.rotate(angle + 90);
       
         pg.beginShape();
 
@@ -1060,9 +780,7 @@ function flower2invert(pg) {
         pg.push(); //putting the petal into its own system so it doesn't use global rotation etc. 
         
         pg.translate(petal2X, petal2Y); //setting the x and y position of the petal so that it follows the radial distribution
-        
-       
-      pg.rotate(angle + 90);
+        pg.rotate(angle + 90);
       
         pg.beginShape();
         pg.fill(bgColour[bgClrSelect]);
@@ -1096,7 +814,7 @@ function flower2invert(pg) {
     for (let x = 0; x < centerDotAmount; x++) { //the x loop sets the amount of dots in each ring
     for (let y = 0; y <dotRows; y ++){  //the y loop sets the amount of rings
     
-      let angle2 = x * (360 / centerDotAmount)-90; //same code as written for flower2 distribution- just dividing a circle by the amount of dots and then - 90 degrees so it is always vertically symmetrical
+      let angle2 = x * (360 / centerDotAmount)-90; //same code as written for radialFlowerDraw distribution- just dividing a circle by the amount of dots and then - 90 degrees so it is always vertically symmetrical
     
     
     pg.angleMode(DEGREES);
@@ -1125,18 +843,13 @@ function flower2invert(pg) {
     pg.strokeWeight(0.25);
     pg.rectMode(CENTER);
     pg.translate(centerX,centerY); //setting to center of mySymbol grid
-    
-    // setting up toggle between diamond or circle using if statement
-    if (CenterRectSelect==true){
     pg.rotate(45); //rotating 45 degrees to make diamond
+   
     pg.rect(0,0,rectSize);
-    } 
-    else {
-      pg.ellipse(0,0,rectSize);
-    }
     pg.pop();
     }
     
+    pg.pop();
     
     }
   
@@ -1148,8 +861,8 @@ function flower2invert(pg) {
       let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)];
       
       let triangleAmount= 8;
- let triangleRadius= 15;
-    
+      let triangleRadius= 15;
+    pg.push();
       pg.angleMode(DEGREES); //changing from radians
     
       //petals tangent
@@ -1230,7 +943,9 @@ function flower2invert(pg) {
     
       //petals inner
       //for loop for duplicating petals and radially distributing them
-    
+  
+      let petal2Amount = petalAmount;
+      let petals2Radius =petals1Radius;
       for (let x = 0; x < petal2Amount; x++) {
         
         let angle = x * (360 / petal2Amount) - 30; //getting the distance that the flowers will be spaced out. 360/ petalAmount gives even spreading and then the -85 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -1311,20 +1026,18 @@ function flower2invert(pg) {
     
     pg.pop();
     
-    
+    pg.pop();
     
     }
     
-    
-    
-   
     function filigree(pg){
-      //drawing the filigree 
+      //drawing the filigree using bezierVertexs so I can fill them with colours
 
       let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
       let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
       let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; 
-
+      
+      pg.push();
       pg.stroke(0);
       pg.strokeWeight(1);
       pg.scale(0.6);
@@ -1397,137 +1110,197 @@ function flower2invert(pg) {
       pg.bezierVertex(117, 72, 99, 81, 109, 105);
       pg.bezierVertex(109, 105, 118, 113, 120, 119);
       pg.endShape();
-      
+      pg.pop();
     }
     
-      
-    function horizontalMirrorFiligree(pg){
-     pg.angleMode(DEGREES);
+     function horizontalMirrorFiligree(pg){
+      //function to clean up rawPattern function
+      //acts as an intermediatary function so I don't have to keep track of so many push and pops.
+      // mirrors the intital filigree drawing horizontally so it can then be used in centerFiligree1
      
+      pg.angleMode(DEGREES);
       pg.push();
-pg.translate(100,0);
-      // pg.translate(170,-50) //setting it to 0,0 so that my previous circle array code works 
-      pg.scale(0.75);
-      pg.rotate(45);
-     
-      pg.push();
-      filigree(pg);
+        pg.translate(100,0);
+        pg.scale(0.75);
+        pg.rotate(45); //provided the most interesting symmetry for me so stuck with 45 degrees
+    
+        // non mirrored filigree
+        pg.push();
+          filigree(pg);
+        pg.pop();
+    
+        // mirrored filigree
+        pg.push();
+          pg.translate(filGapTranslateDisHoriz, 0); //this puts the mirrored filigree back on the sketch since it flips out of the sketch when scaled by -1
+          pg.scale(-1, 1);// using scale to flip along x axis so the filigree is mirrored
+          filigree(pg);
+        pg.pop();
+    
       pg.pop();
-      
-      // mirrored filigree
-      pg.push();
-      pg.translate(filGapTranslateDisHoriz, 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-      pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
-      filigree(pg);
-      pg.pop();
-      
-      
-
     }
     
+    
+    function centerFiligree1(pg){
+// function to clean up mySymbol etc.
+    //this draws a pattern made of the filigree being horizontally mirrored, and then duplicated and vertically mirrored to create symmetrical quarters
+     
+    let DisHorizQuartersX = 170; //puts back on sketch when x axis is flipped
+      let DisHorizQuartersY = 180; //puts back on sketch when y axis is flipped
+      pg.push();
+       
+        pg.translate(31,27);//moving to center
+        pg.scale(0.8); //reducing scale so it fits better
+    
+        // unmirrored half
+        pg.push();
+          // left quarter
+          pg.push();
+            horizontalMirrorFiligree(pg);
+          pg.pop();
+          //right quarter
+          pg.push();
+            pg.translate(DisHorizQuartersX , 0);
+            pg.scale(-1, 1);// inverts the x axis to flip it
+            horizontalMirrorFiligree(pg);
+          pg.pop();
+        pg.pop();
+    
+        // mirrored half on Y axis- duplicating half above and then flipping and translating it to be symmetrical
+        pg.push();
+          pg.translate(0,DisHorizQuartersY);
+          pg.scale(1, -1);// inverting both quarters below along the Y axis to flip it vertically 
+          //left quarter
+          pg.push();
+            horizontalMirrorFiligree(pg);
+          pg.pop();
+          //right quarter
+          pg.push();
+            pg.translate(DisHorizQuartersX , 0);
+            pg.scale(-1, 1); //inverts x axis
+            horizontalMirrorFiligree(pg);
+          pg.pop();
+        pg.pop();
+    
+      pg.pop();
+    }
     
     function verticalMirrorFiligree(pg){
-//vertical mirroring // turn into angles for conrers, centre version and outer middle edges version
-
-pg.push();
-
-pg.translate(-50,0) //setting it to 0 for middle sections of edges - also set it up to vertically mirror instead of horiz
-//horizontal mirroring
-// pg.push();
-
-pg.push();
-
-filigree(pg);
-pg.pop();
-
-// mirrored filigree
-pg.push();
-pg.translate(0, filGapTranslateDisVert); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-pg.scale(1, -1); // this mirrors the filigree by flipping on x axis
-filigree(pg);
-pg.pop();
-
-
+      //function to clean up rawSymbol function
+      //acts like an intermediatary step so I don't have to keep track of so many push and pops. 
+      // does the intitial vertical mirroring of the intitial filigree before I then duplicate and mirror it again in centerFiligree2
+      pg.push();
+        pg.translate(-50,0);
+        // non mirrored filigree
+        pg.push();
+          filigree(pg);
+        pg.pop();
+        // mirrored filigree
+        pg.push();
+          pg.translate(0, filGapTranslateDisVert); // this puts the filigree back on the sketch since the scale by -1 takes it off the sketch and adjusts the gap between the filigrees
+          pg.scale(1, -1);// flips x axis to mirror the filigree horizontally
+          filigree(pg);
+        pg.pop();
+      pg.pop();
+    }
+    
+   function centerFiligree2(pg){
+          //this Draws the alternative center filigree using the scale function to mirror the filigree on the x axis
+          // //function to clean up code instead of having it all in rawSymbol. 
+         
+         let DisHorizQuartersX2 = 20; //creates the gap between the two filigree elements, it also puts the mirrored filigree back on the canvas once it has been flipped on the the x axis with scale
+     
+          pg.push();
+        pg.translate(175,92); //putting into the center of sketch
+        pg.rotate(90); //rotating to horizontal since I liked it better and it gavea stronger difference to filigree 1
+        pg.scale(0.8);
+    
+        
+        pg.push();
+          // left filigree
+          pg.push();
+            verticalMirrorFiligree(pg);
+          pg.pop();
+          // right filigree
+          pg.push();
+            pg.translate(DisHorizQuartersX2 , 0); //puts filigree back onto sketch since flipping x axis removes it from sketch area
+            pg.scale(-1, 1); //flips x axis to mirror the filigree
+            verticalMirrorFiligree(pg);
+          pg.pop();
+        pg.pop();
+      pg.pop();
     }
 
 
-    function horizFilMirQuarters(pg){
-     //This combines the horizontally mirrored filigree into reflected quarters.
-     //put into its own function to clean up and make easier to work with
+   function cornerFiligree1(pg) {
+
+//filigree motif for creating symetrical corners when tiled
+
+  let fil1Scale= 1.25 ; //making filigree slightly bigger
+
+pg.push();
+  
+  //top left corner
      pg.push();
-     //putting the whole object into the center
-     pg.translate(31,27);
-     pg.scale(0.8);
+     pg.scale(fil1Scale);
+     pg.translate(-101,-99); //lining up the center of the filigree in the corner so it is symmetrical when tiled
+        centerFiligree1(pg);
+      pg.pop();
+
+         //bottom left corner
+     pg.push();
+     pg.scale(fil1Scale);
+     pg.translate(-101,60);
+        centerFiligree1(pg);
+      pg.pop();
+      
+
+       //bottom right corner
+     pg.push();
+     pg.scale(fil1Scale);
+     pg.translate(63,60);
+        centerFiligree1(pg);
+      pg.pop();
 
 
-     //non mirrored half
+       //topright corner
      pg.push();
-     
-      // horizontally mirroed quarters
-    horizontalMirrorFiligree(pg);
-    pg.pop();
+     pg.scale(fil1Scale);
+     pg.translate(63,-99);
+        centerFiligree1(pg);
+      pg.pop();
+
     
-    // mirrored filigree
+      
+      pg.pop();
+
+  
+  
+  
+    }
+
+
+   function edgeFiligree2(pg){
+
+    //drawing edge filigree option 2 using rotate and translate to put locate it at the halfway point of the sketches edge
+   
+    //left edge
     pg.push();
-    pg.translate(DisHorizQuartersX , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-    pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
-     
-    horizontalMirrorFiligree(pg);
+    pg.scale(0.75); //making slightly smaller to fit the sketch better
+    pg.translate(10,45);
+    verticalMirrorFiligree(pg);
     pg.pop();
-    
+
+//right edge flipped 180 degrees to get symmetry when tiled
+    pg.push();
+    pg.scale(0.75);
+    pg.translate(255,230);
+    pg.rotate(180);
+    verticalMirrorFiligree(pg);
     pg.pop();
+
+    
+
+
+    
+  }
   
-   
-    //mirrored on the Y axis
-   pg.push();
-  
- pg.translate(0,DisHorizQuartersY);
- pg.scale(1, -1);
-   // horizontally mirroed quarters
-   pg.push();
-    
-   horizontalMirrorFiligree(pg);
-   pg.pop();
-   
-   // mirrored filigree
-   pg.push();
-   pg.translate(DisHorizQuartersX , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-   pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
-    
-   horizontalMirrorFiligree(pg);
-   pg.pop();
-   
-   pg.pop();
- pg.pop();
-
-    }
-
-
-
-    function vertFilMirQuarters(pg){
-      pg.push();
-      //putting the whole object into the center
-      pg.translate(175,92);
-      pg.rotate(90);
-      pg.scale(0.8);
- 
- 
-      //non mirrored half
-      pg.push();
-      
-       // horizontally mirroed quarters
-     verticalMirrorFiligree(pg);
-     pg.pop();
-     
-     // mirrored filigree
-     pg.push();
-     pg.translate(DisHorizQuartersX2 , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-     pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
-      
-     verticalMirrorFiligree(pg);
-     pg.pop();
-     
-     pg.pop();
-   
-    
-    }
