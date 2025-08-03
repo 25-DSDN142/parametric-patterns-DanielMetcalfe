@@ -14,12 +14,11 @@ let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green
 
 //radial flower ring 1 settings
 let flowerAmount =10; //amount of flowers
-let ringRadius1=60; //circular path radius
+let ringRadius1=65; //circular path radius
 let flower180 = false; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
 
 
 //radial flower ring 2 settings
-
 let flowerAmount2 =5; //amount of flowers
 let ringRadius2=25; //circular path radius ///20 and 25 looks cool when set to 5 flowers
 let flowerRing2invert= true; //inverts the colours of flower ring 2let flower1802 = false;
@@ -39,11 +38,13 @@ let petals1Radius = 15;
 let petal2Amount = 10;
 let petals2Radius = 15;
 
-let geometricCenter = false; /////trigger for if statement that selects between geometric center and flower center
 
-//geometric shape settings
-let triangleAmount= 8;
-let triangleRadius= 15;
+
+
+
+
+//center motif selector
+let centerObject = 2; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigree, 3 = vertically mirrored filigree, 4= no middle motif
 
 
 //corner motif settings
@@ -51,10 +52,18 @@ let cornerScale =1;
 let geometricCorner = true;
 let cornerXPos = true; //selects between corners or centre edge reflections for motif
 
-//filifree settings
+//filifree settings- original mirroring gaps
 let filGapTranslateDisHoriz= 148; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
 let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
 let filigreeScale = 0.75;
+
+//for horizontal mirroed filigree
+let DisHorizQuartersX = 170;//adjusts the distance between the two X halves of filigree quarters
+let DisHorizQuartersY = 180; //adjusts the distance between the two Y halves of filigree quarters
+
+//for vertical mirrored filigree
+let DisHorizQuartersX2 = 20;//adjusts the distance between the two X halves of filigree quarters
+
 
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(DEVELOP_GLYPH);
@@ -106,36 +115,7 @@ let pg = createGraphics(200, 200); //creating graphics object
 //  radialFlowerRing3(pg);
 
 //Center motif
-// centerMotif1and2(pg);
-
-
-// ... inside rawPattern(), replacing the filigree section:
-
-
-
-
-
-
-
-pg.push();
-
-// pg.translate(-75,-70) //setting it to 0,0 so that my previous circle array code works /for conrers
-
-pg.push();
-
-
-filigree(pg);
-pg.pop();
-
-// mirrored filigree
-pg.push();
-pg.translate(filGapTranslateDisHoriz, 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
-pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
-filigree(pg);
-pg.pop();
-
-
-
+centerMotif(pg);
 
 
   return pg; // this tells the function to output the above code;
@@ -197,7 +177,7 @@ function cornerMotif(pg){
     pg.scale(cornerScale);
     pg.translate(-centerX, -centerY);                  
    
-   
+   //cahnge to array selctor
    if (geometricCorner==true){
     geometricShape(pg);
    }
@@ -209,20 +189,32 @@ function cornerMotif(pg){
   }
 }
 
-function centerMotif1and2(pg){
+function centerMotif(pg){
+// if statements for selecting which function is displayed in the center
   //cleans up rawPattern function to make it easier to work with
  
-  if (geometricCenter == true){ //if statement toggle between flower and geometric pattern in the centrer
-
-    geometricShape(pg); 
+if (centerObject == 0){ //if statement toggle between motifs 
+    geometricShape(pg); // center geometric shape
    
   }
-  else{
+  else if(centerObject == 1) {
     flower1(pg); ///center flower
   }
 
-}
+  else if(centerObject == 2) {
+    horizFilMirQuarters(pg); //center Horizontally reflected filigree quarters
+  
+  }
 
+  else if(centerObject == 3) {
+    vertFilMirQuarters(pg); //center vertically reflected filigree quarters
+  }
+
+else if (centerObject == 4){
+
+
+}
+}
 function radialFlowerRing1(pg){
   //function for cleaning up rawPattern to make it easier to work with
   //seperating them out into multiple different functions allows them to be used with independenat settings and turned on and off easily
@@ -970,11 +962,12 @@ function flower2invert(pg) {
       let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
       let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
       let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; //creating colour array to easily switch background colours. p5 array reference page helped
+      
       let centerDotAmount= 20; //amount of dots on each row
-let centerDotSize= 1.5; //size of dots
-let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
-let radius2 =10; //sets radius of ellipses   ////set to 50 to get interesting shape
-let rectSize= 5; //size of center diamond
+      let centerDotSize= 1.5; //size of dots
+      let dotRows= 6; //how many circles of dots there are in for the dots in the center of the flower
+      let radius2 =10; //sets radius of ellipses  
+      let rectSize= 5; //size of center diamond
     
       pg.angleMode(DEGREES); //changing from radians
     
@@ -1152,7 +1145,10 @@ let rectSize= 5; //size of center diamond
     
       let lightColour = [color(69, 128, 194),color(149, 239, 149)]; //0 = blue, 1 = green, creating colour array to choose from, learnt from p5 website array section
       let darkColour = [color(32, 59, 114), color (33,112,87)]; //0= blue, 1 = green
-      let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)]; 
+      let bgColour = [color(241, 87, 85),color(69, 128, 194),color(149, 239, 149)];
+      
+      let triangleAmount= 8;
+ let triangleRadius= 15;
     
       pg.angleMode(DEGREES); //changing from radians
     
@@ -1405,10 +1401,32 @@ let rectSize= 5; //size of center diamond
     }
     
       
+    function horizontalMirrorFiligree(pg){
+     pg.angleMode(DEGREES);
+     
+      pg.push();
+pg.translate(100,0);
+      // pg.translate(170,-50) //setting it to 0,0 so that my previous circle array code works 
+      pg.scale(0.75);
+      pg.rotate(45);
+     
+      pg.push();
+      filigree(pg);
+      pg.pop();
+      
+      // mirrored filigree
+      pg.push();
+      pg.translate(filGapTranslateDisHoriz, 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+      pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
+      filigree(pg);
+      pg.pop();
+      
+      
+
+    }
     
     
-    
-    function verticalMirrorFiligree(){
+    function verticalMirrorFiligree(pg){
 //vertical mirroring // turn into angles for conrers, centre version and outer middle edges version
 
 pg.push();
@@ -1430,4 +1448,86 @@ filigree(pg);
 pg.pop();
 
 
+    }
+
+
+    function horizFilMirQuarters(pg){
+     //This combines the horizontally mirrored filigree into reflected quarters.
+     //put into its own function to clean up and make easier to work with
+     pg.push();
+     //putting the whole object into the center
+     pg.translate(31,27);
+     pg.scale(0.8);
+
+
+     //non mirrored half
+     pg.push();
+     
+      // horizontally mirroed quarters
+    horizontalMirrorFiligree(pg);
+    pg.pop();
+    
+    // mirrored filigree
+    pg.push();
+    pg.translate(DisHorizQuartersX , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+    pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
+     
+    horizontalMirrorFiligree(pg);
+    pg.pop();
+    
+    pg.pop();
+  
+   
+    //mirrored on the Y axis
+   pg.push();
+  
+ pg.translate(0,DisHorizQuartersY);
+ pg.scale(1, -1);
+   // horizontally mirroed quarters
+   pg.push();
+    
+   horizontalMirrorFiligree(pg);
+   pg.pop();
+   
+   // mirrored filigree
+   pg.push();
+   pg.translate(DisHorizQuartersX , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+   pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
+    
+   horizontalMirrorFiligree(pg);
+   pg.pop();
+   
+   pg.pop();
+ pg.pop();
+
+    }
+
+
+
+    function vertFilMirQuarters(pg){
+      pg.push();
+      //putting the whole object into the center
+      pg.translate(175,92);
+      pg.rotate(90);
+      pg.scale(0.8);
+ 
+ 
+      //non mirrored half
+      pg.push();
+      
+       // horizontally mirroed quarters
+     verticalMirrorFiligree(pg);
+     pg.pop();
+     
+     // mirrored filigree
+     pg.push();
+     pg.translate(DisHorizQuartersX2 , 0); // this moves the mirrored one back into the sketch since the scale below  inverts the x axis
+     pg.scale(-1, 1); // this mirrors the filigree by flipping on x axis
+      
+     verticalMirrorFiligree(pg);
+     pg.pop();
+     
+     pg.pop();
+   
+    
     }
