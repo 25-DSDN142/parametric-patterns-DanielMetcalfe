@@ -9,10 +9,10 @@ let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green
 //on/off switches and selectors for motifs
 
 //center motif selector- change value between 0 and 4 to change
-let centerObject = 4; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigreeDraw, 3 = vertically mirrored filigreeDraw, 4= no middle motif
+let centerObject = 0; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigreeDraw, 3 = vertically mirrored filigreeDraw, 4= no middle motif
 
 //corner motif selector- change value between 0 and 4 to change
-let cornerObject= 2; //0 = geometric, 1 = flower, 2 = filigreeDraw 1, 3 = filigreeDraw 2, 4 = ring 2
+let cornerObject= 1; //0 = geometric, 1 = flower, 2 = filigreeDraw 1, 3 = filigreeDraw 2, 4 = ring 2
 
 //radial flower rings on/off with true/false, true= on;
 let ring1= true;
@@ -21,16 +21,16 @@ let ring3 =false;
 //radial flower ring 1 settings
 let flowerAmount =10; //amount of flowers
 let ringRadius1=70; //circular path radius
-let radialFlower180 = true; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
+let radialFlower180 = false; //trigger for if statement that toggles every even flower to be 180 degrees flipped if true
 
 //radial flower ring 2 settings
 let flowerAmount2 =5; //amount of flowers
-let ringRadius2=25; //circular path radius ///20 and 25 looks cool when set to 5 flowers
+let ringRadius2=20; //circular path radius ///20 and 25 looks cool when set to 5 flowers
 let radialFlower1802 =false;
 
 //radial flower ring 3 settings
-let flowerAmount3 =40; //amount of flowers 
-let ringRadius3=100; //circular path radius 
+let flowerAmount3 =12; //amount of flowers 
+let ringRadius3=85; //circular path radius 
 let radialFlower1803 = false;
 
 
@@ -44,9 +44,8 @@ let cornerXPos = true; //true = corners, selects between corners or centre edge 
 
 
 
-
 function setup_wallpaper(pWallpaper) {
-  pWallpaper.output_mode(DEVELOP_GLYPH);
+  pWallpaper.output_mode(GRID_WALLPAPER);
   pWallpaper.resolution(NINE_PORTRAIT);
   pWallpaper.show_guide(false);
 
@@ -65,7 +64,7 @@ function my_symbol() {
 
   let pattern = rawPattern(); // converting the raw pattern graphics object into a variable that the crossstich rasteriser can use
   
-  // image(pattern, 100, 100);  //test raw pattern that is not crosstiched if desired
+  // image(pattern, 100, 100);  //test raw pattern that is not crosstiched if it is taking too long when checking the parameters with cross-stich is on
  crossstitch(pattern);
 
 }
@@ -1266,9 +1265,6 @@ pg.push();
       
       pg.pop();
 
-  
-  
-  
     }
 
 
@@ -1296,4 +1292,3 @@ pg.push();
 
     
   }
-  

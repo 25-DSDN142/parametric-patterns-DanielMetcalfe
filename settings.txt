@@ -1,54 +1,445 @@
-You will need to fill out this file for hand in. 
-
-The bellow is just an example, feel free to disregard this documents contents.
-
-
-Your final settings.txt will look something like this when you are finished:
-
-/////////////////////////////////
-
 Wallpaper 1:
 
-//your parameter variables go here!
-let rect_width  = 20;
-let rect_height = 20;
-let paramter1 = 10;
-let paramter2 = true;
-let paramter3 = 50; 
-let paramter4 = 0; 
-let paramter5 = 60;
+//the crosstich rasteriser is a lot slower in p5 than processing, so it will take a while to load the sketch outside of develop_glyph mode. If you want to speed up the process checking out the parameters below you can turn off the cross stich function and turn on the image function above it in mySymbol to render the unrasterised version
+//all paramaters are labeled with explanation comments in my_wallpaper.js but I removed the comments here to make it easier to read the parameter changes
+
+
+let centerX=100; 
+let centerY=100;
+
+
+let lightClrSelect =4;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =3;         
+let bgClrSelect= 1; 
+
+let centerObject = 3; 
+let cornerObject= 5; 
+
+let ring1= false;
+let ring3 =false;
+
+
+let flowerAmount =10; 
+let ringRadius1=100; 
+let radialFlower180 = true; 
+
+let flowerAmount2 =5; 
+let ringRadius2=25;  
+let radialFlower1802 =false;
+
+let flowerAmount3 =40; 
+let ringRadius3=100;  
+let radialFlower1803 = false;
+
+let petalAmount = 10; 
+let petals1Radius = 15;
+
+
+let cornerScale =1; 
+let cornerXPos = true; 
+
 
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(GRID_WALLPAPER);
-  pWallpaper.resolution(NINE_LANDSCAPE);
-  pWallpaper.show_guide(false); //set this to false when you're ready to print
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
 
-  //Grid settings
-  pWallpaper.grid_settings.cell_width  = 100;
-  pWallpaper.grid_settings.cell_height = 100;
-  pWallpaper.grid_settings.row_offset  = 50;
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
 }
 
 /////////////////////////////////
 
 Wallpaper 2:
 
-//your parameter variables go here!
-let rect_width  = 10;
-let rect_height = 10;
-let paramter1 = 20;
-let paramter2 = false;
-let paramter3 = 50; 
-let paramter4 = 80; 
-let paramter5 = 30;
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =4;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =4;         
+let bgClrSelect= 5; 
+
+let centerObject = 1; 
+let cornerObject=0; 
+
+let ring1= false;
+let ring3 =false;
+
+
+let flowerAmount =4; 
+let ringRadius1=70; 
+let radialFlower180 =false; 
+
+
+let flowerAmount2 =12 ;
+let ringRadius2=60;  
+let radialFlower1802 =false;
+
+
+let flowerAmount3 =4;  
+let ringRadius3=100;  
+let radialFlower1803 = false;
+
+
+
+let petalAmount = 20; 
+let petals1Radius = 30;
+
+
+let cornerScale =0.5; 
+let cornerXPos = true; 
+
 
 function setup_wallpaper(pWallpaper) {
   pWallpaper.output_mode(GRID_WALLPAPER);
-  pWallpaper.resolution(NINE_LANDSCAPE);
-  pWallpaper.show_guide(false); //set this to false when you're ready to print
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
 
-  //Grid settings
-  pWallpaper.grid_settings.cell_width  = 100;
-  pWallpaper.grid_settings.cell_height = 100;
-  pWallpaper.grid_settings.row_offset  = 0;
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+
+/////////////////////////////////
+
+Wallpaper 3:
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =0;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =4;         
+let bgClrSelect= 3; 
+
+let centerObject = 4; 
+let cornerObject=2; 
+
+let ring1= true;
+let ring3 =true;
+
+let flowerAmount =4; 
+let ringRadius1=70; 
+let radialFlower180 =false; 
+
+let flowerAmount2 =1 ;
+let ringRadius2=60; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =4; 
+let ringRadius3=100; 
+let radialFlower1803 = false;
+
+let petalAmount = 10; 
+let petals1Radius = 15;
+
+let cornerScale =1;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+/////////////////////////////////
+
+Wallpaper 4:
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =0;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =5;         
+let bgClrSelect= 4; 
+
+let centerObject = 4; 
+let cornerObject=5; 
+
+let ring1= true;
+let ring3 =true;
+
+let flowerAmount =40; 
+let ringRadius1=70; 
+let radialFlower180 =false; 
+
+let flowerAmount2 =10;
+let ringRadius2=25; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =40; 
+let ringRadius3=120; 
+let radialFlower1803 = false;
+
+let petalAmount = 10; 
+let petals1Radius = 15;
+
+let cornerScale =1;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+
+/////////////////////////////////
+
+Wallpaper 5:
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =4;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =4;         
+let bgClrSelect= 2; 
+
+let centerObject = 4; 
+let cornerObject=5; 
+
+let ring1= true;
+let ring3 =true;
+
+let flowerAmount =8; 
+let ringRadius1=65; 
+let radialFlower180 =true; 
+
+let flowerAmount2 =3; 
+let ringRadius2=15; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =20; 
+let ringRadius3=115; 
+let radialFlower1803 = false;
+
+let petalAmount = 10; 
+let petals1Radius = 15;
+
+let cornerScale =1;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+
+/////////////////////////////////
+
+Wallpaper 6:
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =0;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =4;         
+let bgClrSelect= 4; 
+
+let centerObject = 0; 
+let cornerObject=0; 
+
+let ring1= false;
+let ring3 =false;
+
+let flowerAmount =8; 
+let ringRadius1=65; 
+let radialFlower180 =true; 
+
+let flowerAmount2 =3; 
+let ringRadius2=15; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =20; 
+let ringRadius3=115; 
+let radialFlower1803 = false;
+
+let petalAmount = 40; 
+let petals1Radius = 30;
+
+let cornerScale =4;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+
+/////////////////////////////////
+
+Wallpaper 7:
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =0;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect =1;         
+let bgClrSelect= 4; 
+
+let centerObject = 2; 
+let cornerObject=2; 
+
+let ring1= true;
+let ring3 =false;
+
+let flowerAmount =10; 
+let ringRadius1=70; 
+let radialFlower180 =true; 
+
+let flowerAmount2 =3; 
+let ringRadius2=15; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =20; 
+let ringRadius3=115; 
+let radialFlower1803 = false;
+
+let petalAmount = 40; 
+let petals1Radius = 30;
+
+let cornerScale =4;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+/////////////////////////////////
+
+Wallpaper 8:
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =2;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect = 5;         
+let bgClrSelect= 5; 
+
+let centerObject = 4; 
+let cornerObject=3; 
+
+let ring1= true;
+let ring3 =false;
+
+let flowerAmount =10; 
+let ringRadius1=50; 
+let radialFlower180 =true; 
+
+let flowerAmount2 =4; 
+let ringRadius2=20; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =20; 
+let ringRadius3=115; 
+let radialFlower1803 = false;
+
+let petalAmount = 40; 
+let petals1Radius = 30;
+
+let cornerScale =1;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
+}
+
+/////////////////////////////////
+
+Wallpaper 9: My favourite
+
+
+let centerX=100; 
+let centerY=100;
+
+let lightClrSelect =0;        //global colour system- changes the light and dark colours of all the functions and the pg.background
+let darkClrSelect = 0;         
+let bgClrSelect= 0; 
+
+let centerObject = 0; 
+let cornerObject=1; 
+
+let ring1= true;
+let ring3 =false;
+
+let flowerAmount =10; 
+let ringRadius1=70; 
+let radialFlower180 =false; 
+
+let flowerAmount2 =5; 
+let ringRadius2=20; 
+let radialFlower1802 =false;
+
+let flowerAmount3 =12; 
+let ringRadius3=85; 
+let radialFlower1803 = false;
+
+let petalAmount = 10; 
+let petals1Radius = 15;
+
+let cornerScale =1;
+let cornerXPos = true;
+
+function setup_wallpaper(pWallpaper) {
+  pWallpaper.output_mode(GRID_WALLPAPER);
+  pWallpaper.resolution(NINE_PORTRAIT);
+  pWallpaper.show_guide(false);
+
+  pWallpaper.grid_s.cell_width  = 200;
+  pWallpaper.grid_s.cell_height = 200;
+  pWallpaper.grid_s.row_offset  = 0;
+
+
 }
