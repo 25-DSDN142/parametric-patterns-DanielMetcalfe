@@ -1,24 +1,22 @@
 let centerX=100; //centre point of circular paths and canvas
 let centerY=100;
 
-//global colour settings- choose colours for composition
-let lightClrSelect =5; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green,2 = orange,3= yellow, 4= pink, 5 = purple;
-let darkClrSelect =5; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green , 2= orange, 3= yellow, 4 = pink, 5 =purple;
-let bgClrSelect= 5; //pg.background colour switch, 0= orange, 1 = blue, 2= green, 3 = yellow, 4 = pink,5 = purple;
+//global colour settings- choose colours for composition by changing these values
+let lightClrSelect =0; //setting up variable to easily switch between the lightcolours in an array ,0 =blue, 1= green,2 = orange,3= yellow, 4= pink, 5 = purple;
+let darkClrSelect =0; //setting up variable to easily switch between the darkcolours in an array ,0 =blue, 1= green , 2= orange, 3= yellow, 4 = pink, 5 =purple;
+let bgClrSelect= 0; //pg.background colour switch, 0= orange, 1 = blue, 2= green, 3 = yellow, 4 = pink,5 = purple;
 
+//on/off switches and selectors for motifs
 
-//on/off switches and selctors for motifs
+//center motif selector- change value between 0 and 4 to change
+let centerObject = 4; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigreeDraw, 3 = vertically mirrored filigreeDraw, 4= no middle motif
 
-//center motif selector
-let centerObject = 2; //0 = geometric shape, 1 = flower, 2 = horizontally mirrored filigree, 3 = vertically mirrored filigree, 4= no middle motif
+//corner motif selector- change value between 0 and 4 to change
+let cornerObject= 2; //0 = geometric, 1 = flower, 2 = filigreeDraw 1, 3 = filigreeDraw 2, 4 = ring 2
 
-//corner motif selector
-let cornerObject= 2; //0 = geometric, 1 = flower, 2 = filigree 1, 3 = filigree 2, 4 = ring 2
-
-//radial flower rings on/off
+//radial flower rings on/off with true/false, true= on;
 let ring1= true;
 let ring3 =false;
-
 
 //radial flower ring 1 settings
 let flowerAmount =10; //amount of flowers
@@ -31,23 +29,18 @@ let ringRadius2=25; //circular path radius ///20 and 25 looks cool when set to 5
 let radialFlower1802 =false;
 
 //radial flower ring 3 settings
-let flowerAmount3 =40; //amount of flowers ////4 gives geometric look when paired with 80 radius
-let ringRadius3=100; //circular path radius ///20 and 25 looks cool when set to 5 flowers
-let radialFlower1803 = true;
+let flowerAmount3 =40; //amount of flowers 
+let ringRadius3=100; //circular path radius 
+let radialFlower1803 = false;
 
 
-///center and corner flower
-let petalAmount = 10; //adjust these
+///center and corner flower adjustables
+let petalAmount = 10; 
 let petals1Radius = 15;
 
 //corner motif settings
-let cornerScale =1; //adjust the scale of the flower or geometric pattern
-let cornerXPos = true; //selects between corners or centre edge reflections for motif
-
-//filifree settings- original mirroring gaps
-let filGapTranslateDisHoriz= 148; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
-let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirrored filigrees by translating the mirrored one, smaller numbers= closer
-let filigreeScale = 0.75;
+let cornerScale =1; //adjust the scale of the corner flower or geometric pattern
+let cornerXPos = true; //true = corners, selects between corners or centre edge reflections for flower and geometric motif
 
 
 
@@ -72,7 +65,7 @@ function my_symbol() {
 
   let pattern = rawPattern(); // converting the raw pattern graphics object into a variable that the crossstich rasteriser can use
   
-  // image(pattern, 100, 100);  //test raw pattern
+  // image(pattern, 100, 100);  //test raw pattern that is not crosstiched if desired
  crossstitch(pattern);
 
 }
@@ -89,19 +82,17 @@ let pg = createGraphics(200, 200); //creating graphics object to draw on and ras
 
 
   if (ring1 == true){ //on/off switch for radial ring 1
- radialFlowerDrawRing1(pg); 
+ radialSingleFlowerDrawRing1(pg); 
   }
   if (ring3 == true){//on/off switch for radial ring 1
-  radialFlowerDrawRing3(pg);
+  radialSingleFlowerDrawRing3(pg);
   }
-
-  
 
 //Center motif is called away, selection between which motif is done with if statements inside cornerMotif 
 centerMotif(pg);
 
 
-//corner motif selector logic
+//corner motif selector logic- cornerObject variable selects which motif to call away
  
 if (cornerObject == 0) {
     // Geometric shape in corners
@@ -111,14 +102,14 @@ if (cornerObject == 0) {
     cornerMotif(pg); // flower is called inside cornerMotif because of for loop 
   }
 
-  if (cornerObject==2){ //corner filigree
+  if (cornerObject==2){ //corner filigreeDraw
     pg.push();
-    cornerFiligree1(pg); 
+    cornerfiligreeDraw1(pg); 
     pg.pop();
         }
   else if (cornerObject==3 ){
     pg.push();
-          edgeFiligree2(pg); 
+          edgefiligreeDraw2(pg); 
           pg.pop();
               }
 
@@ -176,7 +167,7 @@ function cornerMotif(pg){
   let flowerMiddleX2 = [0, 100,100, 200]; // lines up flower or geometric shape with halfway point of sketch instead of corners for added flexibility
   let flowerMiddleY2 = [100, 0, 200, 100];
 
-   for (let x = 0; x < 4; x++) {
+   for (let x = 0; x < 4; x++) { //for loop that pushes the corner motif out to four corners
     pg.push();
     if( cornerXPos == true){  //toggle for flower or geometric shape being in corner or at halfway point of the edge of sketch
   
@@ -216,29 +207,29 @@ if (centerObject == 0){ //if statement toggle between motifs
   }
 
   else if(centerObject == 2) {
-    centerFiligree1(pg); //center Horizontally reflected filigree quarters
+    centerfiligreeDraw1(pg); //center Horizontally reflected filigreeDraw quarters
   
   }
 
   else if(centerObject == 3) {
-    centerFiligree2(pg); //center vertically reflected filigree quarters
+    centerfiligreeDraw2(pg); //center vertically reflected filigreeDraw quarters
   }
 
 else if (centerObject == 4){
- radialFlowerDrawRing2(pg); // center flower ring
+ radialSingleFlowerDrawRing2(pg); // center flower ring
 }
 pg.pop();
 }
-function radialFlowerDrawRing1(pg){
+function radialSingleFlowerDrawRing1(pg){
   //function for cleaning up rawPattern to make it easier to work with
   //seperating them out into multiple different functions allows them to be used with independenat settings and turned on and off easily
 
- //for loop for duplicating radialFlowerDraw and radially distributing it
+ //for loop for duplicating radialSingleFlowerDraw and radially distributing it
  for (let x = 0; x < flowerAmount; x++) {
     
   let angle = x * (360 / flowerAmount) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
   
-  let flowerX = centerX + ringRadius1 * pg.cos(angle);   // this sets the x and y position of each flower using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. 
+  let flowerX = centerX + ringRadius1 * pg.cos(angle);   // this sets the x and y position of each flower using cos and sin to create a circlular path and then adding the adjustable radius distance from the centre point. p5.js website sine and cosine examples helped with this
   let flowerY = centerY + ringRadius1 * pg.sin(angle);
 
   let flowerFlip = x % 2 == 0; //setting up every even flower to be flipped
@@ -264,17 +255,17 @@ function radialFlowerDrawRing1(pg){
     pg.rotate(angle + 90);
   }
 
-  radialFlowerDraw(pg, flowerFlip); // imaging the radialFlowerDraw graphics object
+  radialSingleFlowerDraw(pg, flowerFlip); // imaging the radialSingleFlowerDraw graphics object
   pg.pop();// ending that system 
 }
 
 }
 
 
- function radialFlowerDrawRing2(pg){
+ function radialSingleFlowerDrawRing2(pg){
     //function for cleaning up rawPattern to make it easier to work with
 pg.push();
-    //for loop for duplicating radialFlowerDraw and radially distributing it
+    //for loop for duplicating radialSingleFlowerDraw and radially distributing it
     for (let x = 0; x < flowerAmount2; x++) {
        
      let angle = x * (360 / flowerAmount2) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -300,22 +291,22 @@ pg.push();
          pg.rotate(angle + 90); //this is the flower pointed in to the centre, using 270 instead of 90 to flip it
        }
      } 
-     //if radialFlower180 variable =false;
-     else {
+     
+     else {//if radialFlower180 variable =false;
        pg.rotate(angle + 90);
      }
  
-     radialFlowerDraw(pg, flowerFlip2); // imaging the radialFlowerDraw graphics object
+     radialSingleFlowerDraw(pg, flowerFlip2); // imaging the radialSingleFlowerDraw graphics object
    
      pg.pop();// ending that system 
    }
    pg.pop();
    }
 
-   function radialFlowerDrawRing3(pg){
+   function radialSingleFlowerDrawRing3(pg){
       //function for cleaning up rawPattern to make it easier to work with
 pg.push();
-    //for loop for duplicating radialFlowerDraw and radially distributing it
+    //for loop for duplicating radialSingleFlowerDraw and radially distributing it
     for (let x = 0; x < flowerAmount3; x++) {
        
      let angle = x * (360 / flowerAmount3) - 90; //getting the distance that the flowers will be spaced out. 360/ flowerAmount gives even spreading and then the -90 makes it so that it is always vertically symetrical no matter how many flowers are used.
@@ -346,7 +337,7 @@ pg.push();
        pg.rotate(angle + 90);
      }
    
-     radialFlowerDraw(pg, flowerFlip2); // imaging the radialFlowerDraw graphics object
+     radialSingleFlowerDraw(pg, flowerFlip2); // imaging the radialSingleFlowerDraw graphics object
    
      pg.pop();// ending that system 
    }
@@ -355,7 +346,7 @@ pg.push();
 
 
 
-function radialFlowerDraw (pg) {
+function radialSingleFlowerDraw (pg) {
   // drawing the flower for the radial distributed rings
     pg.push();
     let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
@@ -731,7 +722,7 @@ function radialFlowerDraw (pg) {
     
       //petals inner
       //for loop for duplicating petals and radially distributing them
-      let petal2Amount = petalAmount;
+      let petal2Amount = petalAmount; 
       let petals2Radius =petals1Radius;
 
     
@@ -816,7 +807,7 @@ function radialFlowerDraw (pg) {
     for (let x = 0; x < centerDotAmount; x++) { //the x loop sets the amount of dots in each ring
     for (let y = 0; y <dotRows; y ++){  //the y loop sets the amount of rings
     
-      let angle2 = x * (360 / centerDotAmount)-90; //same code as written for radialFlowerDraw distribution- just dividing a circle by the amount of dots and then - 90 degrees so it is always vertically symmetrical
+      let angle2 = x * (360 / centerDotAmount)-90; //same code as written for radialSingleFlowerDraw distribution- just dividing a circle by the amount of dots and then - 90 degrees so it is always vertically symmetrical
     
     
     pg.angleMode(DEGREES);
@@ -1030,8 +1021,8 @@ function radialFlowerDraw (pg) {
     
     }
     
-    function filigree(pg){
-      //drawing the filigree using bezierVertexs so I can fill them with colours
+    function filigreeDraw(pg){
+      //drawing the filigreeDraw using bezierVertexs so I can fill them with colours
 
      let lightColour = [color(69, 128, 194),color(149, 239, 149),color(255,133,133),color(224,213,108), color (255,128,154),color(146,131,255)]; //0 = blue, 1 = green, 2 = orange, 3= yellow,4 = pink, 5 = purple. creating colour array to choose from
     let darkColour = [color(32, 59, 114), color (33,112,87),color(241, 87, 85),color(255,238,80),color(255,59,114),color(87,0,255)]; //0= blue, 1 = green, 2 =orange, 3= yellow, 4 = pink, 5= purple;
@@ -1113,10 +1104,10 @@ function radialFlowerDraw (pg) {
       pg.pop();
     }
     
-     function horizontalMirrorFiligree(pg){
+     function horizontalMirrorfiligreeDraw(pg){
       //function to clean up rawPattern function
       //acts as an intermediatary function so I don't have to keep track of so many push and pops.
-      // mirrors the intital filigree drawing horizontally so it can then be used in centerFiligree1
+      // mirrors the intital filigreeDraw drawing horizontally so it can then be used in centerfiligreeDraw1
      
       pg.angleMode(DEGREES);
       pg.push();
@@ -1124,25 +1115,26 @@ function radialFlowerDraw (pg) {
         pg.scale(0.75);
         pg.rotate(45); //provided the most interesting symmetry for me so stuck with 45 degrees
     
-        // non mirrored filigree
+        // non mirrored filigreeDraw
         pg.push();
-          filigree(pg);
+          filigreeDraw(pg);
         pg.pop();
     
-        // mirrored filigree
+        // mirrored filigreeDraw
         pg.push();
-          pg.translate(filGapTranslateDisHoriz, 0); //this puts the mirrored filigree back on the sketch since it flips out of the sketch when scaled by -1
-          pg.scale(-1, 1);// using scale to flip along x axis so the filigree is mirrored
-          filigree(pg);
+        let filGapTranslateDisHoriz= 148; //adjusts the gap between the horizontal mirrored filigreeDraws by translating the mirrored one, smaller numbers= closer
+          pg.translate(filGapTranslateDisHoriz, 0); //this puts the mirrored filigreeDraw back on the sketch since it flips out of the sketch when scaled by -1
+          pg.scale(-1, 1);// using scale to flip along x axis so the filigreeDraw is mirrored
+          filigreeDraw(pg);
         pg.pop();
     
       pg.pop();
     }
     
     
-    function centerFiligree1(pg){
+    function centerfiligreeDraw1(pg){
 // function to clean up mySymbol etc.
-    //this draws a pattern made of the filigree being horizontally mirrored, and then duplicated and vertically mirrored to create symmetrical quarters
+    //this draws a pattern made of the filigreeDraw being horizontally mirrored, and then duplicated and vertically mirrored to create symmetrical quarters
      
     let DisHorizQuartersX = 170; //puts back on sketch when x axis is flipped
       let DisHorizQuartersY = 180; //puts back on sketch when y axis is flipped
@@ -1155,13 +1147,13 @@ function radialFlowerDraw (pg) {
         pg.push();
           // left quarter
           pg.push();
-            horizontalMirrorFiligree(pg);
+            horizontalMirrorfiligreeDraw(pg);
           pg.pop();
           //right quarter
           pg.push();
             pg.translate(DisHorizQuartersX , 0);
             pg.scale(-1, 1);// inverts the x axis to flip it
-            horizontalMirrorFiligree(pg);
+            horizontalMirrorfiligreeDraw(pg);
           pg.pop();
         pg.pop();
     
@@ -1171,86 +1163,87 @@ function radialFlowerDraw (pg) {
           pg.scale(1, -1);// inverting both quarters below along the Y axis to flip it vertically 
           //left quarter
           pg.push();
-            horizontalMirrorFiligree(pg);
+            horizontalMirrorfiligreeDraw(pg);
           pg.pop();
           //right quarter
           pg.push();
             pg.translate(DisHorizQuartersX , 0);
             pg.scale(-1, 1); //inverts x axis
-            horizontalMirrorFiligree(pg);
+            horizontalMirrorfiligreeDraw(pg);
           pg.pop();
         pg.pop();
     
       pg.pop();
     }
     
-    function verticalMirrorFiligree(pg){
+    function verticalMirrorfiligreeDraw(pg){
       //function to clean up rawSymbol function
       //acts like an intermediatary step so I don't have to keep track of so many push and pops. 
-      // does the intitial vertical mirroring of the intitial filigree before I then duplicate and mirror it again in centerFiligree2
+      // does the intitial vertical mirroring of the intitial filigreeDraw before I then duplicate and mirror it again in centerfiligreeDraw2
       pg.push();
         pg.translate(-50,0);
-        // non mirrored filigree
+        // non mirrored filigreeDraw
         pg.push();
-          filigree(pg);
+          filigreeDraw(pg);
         pg.pop();
-        // mirrored filigree
+        // mirrored filigreeDraw
         pg.push();
-          pg.translate(0, filGapTranslateDisVert); // this puts the filigree back on the sketch since the scale by -1 takes it off the sketch and adjusts the gap between the filigrees
-          pg.scale(1, -1);// flips x axis to mirror the filigree horizontally
-          filigree(pg);
+        let filGapTranslateDisVert= 185; //adjusts the gap between the horizontal mirrored filigreeDraws by translating the mirrored one, smaller numbers= closer
+        pg.translate(0, filGapTranslateDisVert); // this puts the filigreeDraw back on the sketch since the scale by -1 takes it off the sketch and adjusts the gap between the filigreeDraws
+        pg.scale(1, -1);// flips x axis to mirror the filigreeDraw horizontally
+          filigreeDraw(pg);
         pg.pop();
       pg.pop();
     }
     
-   function centerFiligree2(pg){
-          //this Draws the alternative center filigree using the scale function to mirror the filigree on the x axis
+   function centerfiligreeDraw2(pg){
+          //this Draws the alternative center filigreeDraw using the scale function to mirror the filigreeDraw on the x axis
           // //function to clean up code instead of having it all in rawSymbol. 
          
-         let DisHorizQuartersX2 = 20; //creates the gap between the two filigree elements, it also puts the mirrored filigree back on the canvas once it has been flipped on the the x axis with scale
+         let DisHorizQuartersX2 = 20; //creates the gap between the two filigreeDraw elements, it also puts the mirrored filigreeDraw back on the canvas once it has been flipped on the the x axis with scale
      
           pg.push();
         pg.translate(175,92); //putting into the center of sketch
-        pg.rotate(90); //rotating to horizontal since I liked it better and it gavea stronger difference to filigree 1
+        pg.rotate(90); //rotating to horizontal since I liked it better and it gavea stronger difference to filigreeDraw 1
         pg.scale(0.8);
     
         
         pg.push();
-          // left filigree
+          // left filigreeDraw
           pg.push();
-            verticalMirrorFiligree(pg);
+            verticalMirrorfiligreeDraw(pg);
           pg.pop();
-          // right filigree
+          // right filigreeDraw
           pg.push();
-            pg.translate(DisHorizQuartersX2 , 0); //puts filigree back onto sketch since flipping x axis removes it from sketch area
-            pg.scale(-1, 1); //flips x axis to mirror the filigree
-            verticalMirrorFiligree(pg);
+            pg.translate(DisHorizQuartersX2 , 0); //puts filigreeDraw back onto sketch since flipping x axis removes it from sketch area
+            pg.scale(-1, 1); //flips x axis to mirror the filigreeDraw
+            verticalMirrorfiligreeDraw(pg);
           pg.pop();
         pg.pop();
       pg.pop();
     }
 
 
-   function cornerFiligree1(pg) {
+   function cornerfiligreeDraw1(pg) {
 
-//filigree motif for creating symetrical corners when tiled
+//filigreeDraw motif for creating symetrical corners when tiled
 
-  let fil1Scale= 1.25 ; //making filigree slightly bigger
+  let fil1Scale= 1.25 ; //making filigreeDraw slightly bigger
 
 pg.push();
   
   //top left corner
      pg.push();
      pg.scale(fil1Scale);
-     pg.translate(-101,-99); //lining up the center of the filigree in the corner so it is symmetrical when tiled
-        centerFiligree1(pg);
+     pg.translate(-101,-99); //lining up the center of the filigreeDraw in the corner so it is symmetrical when tiled
+        centerfiligreeDraw1(pg);
       pg.pop();
 
          //bottom left corner
      pg.push();
      pg.scale(fil1Scale);
      pg.translate(-101,60);
-        centerFiligree1(pg);
+        centerfiligreeDraw1(pg);
       pg.pop();
       
 
@@ -1258,7 +1251,7 @@ pg.push();
      pg.push();
      pg.scale(fil1Scale);
      pg.translate(63,60);
-        centerFiligree1(pg);
+        centerfiligreeDraw1(pg);
       pg.pop();
 
 
@@ -1266,7 +1259,7 @@ pg.push();
      pg.push();
      pg.scale(fil1Scale);
      pg.translate(63,-99);
-        centerFiligree1(pg);
+        centerfiligreeDraw1(pg);
       pg.pop();
 
     
@@ -1279,15 +1272,15 @@ pg.push();
     }
 
 
-   function edgeFiligree2(pg){
+   function edgefiligreeDraw2(pg){
 
-    //drawing edge filigree option 2 using rotate and translate to put locate it at the halfway point of the sketches edge
+    //drawing edge filigreeDraw option 2 using rotate and translate to put locate it at the halfway point of the sketches edge
    
     //left edge
     pg.push();
     pg.scale(0.75); //making slightly smaller to fit the sketch better
     pg.translate(10,45);
-    verticalMirrorFiligree(pg);
+    verticalMirrorfiligreeDraw(pg);
     pg.pop();
 
 //right edge flipped 180 degrees to get symmetry when tiled
@@ -1295,7 +1288,7 @@ pg.push();
     pg.scale(0.75);
     pg.translate(255,230);
     pg.rotate(180);
-    verticalMirrorFiligree(pg);
+    verticalMirrorfiligreeDraw(pg);
     pg.pop();
 
     
